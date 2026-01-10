@@ -3,7 +3,7 @@
 
 
 up: 
-	docker compose up --build
+	src/docker compose up --build
 
 
 debug-wordpress:
@@ -11,8 +11,8 @@ debug-wordpress:
 #innerhalb vom container befehle runnen 
 # -> container stopped nicht direkt/ heangt sich auf 
 
-debug-wordpress-running:
-    docker compose exec wordpress /bin/bash
+#debug-wordpress-running:
+#    docker compose exec wordpress /bin/bash
 
 #docker container ls -a 
 # see all running containers
@@ -20,7 +20,7 @@ debug-wordpress-running:
 #docker rm [id]
 
 clean:
-    docker compose down -v
-    docker system prune -af
+	docker compose down -v
+	docker system prune -af
 
 re: clean up
