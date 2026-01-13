@@ -15,7 +15,8 @@ debug-mariaDb:
 	docker run -it mariadb /bin/bash
 
 
-debug-
+debug-nginx: 
+	docker run -it nginx /bin/bash
 #debug-wordpress-running:
 #    docker compose exec wordpress /bin/bash
 
