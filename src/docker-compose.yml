@@ -2,11 +2,16 @@
 
 services:
   nginx:
-    build: ../requirements/nginx/.
+    build: ./requirements/nginx/.
     container_name: nginx
     ports:
      - "8080:80"
 
   wordpress:
-    build: ../requirements/wordpress/.
+    build: ./requirements/WordPress/.
     container_name: wp-php
+
+  mariadb:
+    build: ./requirements/MariaDB/.
+    container_name: mariadb
+

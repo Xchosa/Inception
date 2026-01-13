@@ -3,7 +3,7 @@
 
 
 up: 
-	src/docker compose up --build
+	docker compose -f src/docker-compose.yml up --build
 
 
 debug-wordpress:
@@ -11,6 +11,11 @@ debug-wordpress:
 #innerhalb vom container befehle runnen 
 # -> container stopped nicht direkt/ heangt sich auf 
 
+debug-mariaDb:
+	docker run -it mariadb /bin/bash
+
+
+debug-
 #debug-wordpress-running:
 #    docker compose exec wordpress /bin/bash
 
