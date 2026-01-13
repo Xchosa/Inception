@@ -8,7 +8,7 @@ CMD ["nginx", "-g", "daemon off;"]
 
 # copy files from host to container 
 # relative Dockerfile loccation to absolute path in container
-COPY ./tools/nginx.sh /nginx
+COPY ./tools/nginx.sh /nginx.sh
 
 RUN chmod +x /nginx.sh 
 
