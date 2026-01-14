@@ -5,13 +5,36 @@ services:
     build: ./requirements/nginx/.
     container_name: nginx
     ports:
-     - "8080:80"
+     -"443:443"
+     -"8080:80"
+    depends_on:
+      - wordpress
+    networks:
+      - inception
+    volumes:
+      - ./requirements/nginx/conf:/etc/nginx/conf.d
+
 
   wordpress:
     build: ./requirements/WordPress/.
     container_name: wp-php
+    networks:
+      - inception
+    depends_on:
+      - mariadb
 
   mariadb:
     build: ./requirements/MariaDB/.
     container_name: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD:  ${MYSQL_ROOT_PASSWORD:-defaultpassword}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    networks:
+      - inception
+
+  networks:
+    inception:
+      driver: bridge
 
