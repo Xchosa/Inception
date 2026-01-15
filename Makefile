@@ -26,7 +26,7 @@ debug-nginx:
 #docker rm [id]
 
 clean:
-	docker compose down -v
+	cd src && docker compose down -v
 	docker system prune -af
 
 re: clean up
