@@ -3,7 +3,7 @@
 
 
 up: 
-	docker compose -f src/docker-compose.yml up --build
+	cd src && docker compose -f docker-compose.yml  up --build
 
 
 debug-wordpress:
