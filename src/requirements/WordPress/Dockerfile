@@ -9,6 +9,7 @@ RUN apt update && apt upgrade -y && \
     apt update && \
 	apt install -y php8.4-fpm php8.4-mysql php8.4-curl php8.4-gd php8.4-mbstring php8.4-xml php8.4-xmlrpc php8.4-zip php8.4-opcache
 
+    
 CMD [ "php-fpm8.4", "-F"]
 
 # copy files from host to container 

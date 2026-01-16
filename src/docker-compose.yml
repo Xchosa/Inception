@@ -21,6 +21,8 @@ services:
   wordpress:
     build: ./requirements/WordPress/.
     container_name: wp-php
+    volumes:
+      - wordpress_data:/var/www/html
     restart: on-failure
     ports:
       - "9000:9000"
@@ -42,6 +44,8 @@ services:
 
   mariadb:
     build: ./requirements/MariaDB/.
+    volumes:
+      - mariadb_data:/var/lib/mysql
     container_name: mariadb
     restart: on-failure
     ports:
@@ -55,6 +59,19 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     networks:
       - inception
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5 
+
+ 
+
+volumes:
+  mariadb_data:
+    driver: local
+  wordpress_data:
+    driver: local
 
 networks:
   inception:
