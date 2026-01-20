@@ -16,6 +16,7 @@ services:
       - inception
     volumes:
       - ./requirements/nginx/conf:/etc/nginx/conf.d
+      - wordpress_data:/var/www/html
 
 
   wordpress:

@@ -2,7 +2,7 @@
 FROM debian:bookworm
 
 RUN apt update && apt upgrade -y && \
-	apt install -y nginx 
+	apt install -y nginx openssl
 
 CMD ["nginx", "-g", "daemon off;"]
 
