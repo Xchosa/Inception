@@ -16,3 +16,5 @@ RUN chmod +x /nginx.sh
 ENTRYPOINT  [ "/nginx.sh" ]
 
 
+
+

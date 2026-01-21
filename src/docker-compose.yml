@@ -23,7 +23,8 @@ services:
     build: ./requirements/WordPress/.
     container_name: wp-php
     volumes:
-      - wordpress_data:/var/www/html
+      - wordpress_data:/var/www/html # wordpress volume 
+      # configure own page path
     restart: on-failure
     ports:
       - "9000:9000"
@@ -71,8 +72,15 @@ services:
 volumes:
   mariadb_data:
     driver: local
+    driver_opts:
+    o: bind
+    # ~/home/poverbec/data/mariadb
+
   wordpress_data:
     driver: local
+    river_opts:
+    o: bind
+    # ~/home/poverbec/data/wordpress
 
 networks:
   inception:
