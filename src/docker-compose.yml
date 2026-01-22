@@ -34,11 +34,13 @@ services:
       MYSQL_HOST: mariadb
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       WP_ADMIN_USER: ${WP_ADMIN_USER}
-      WP_ADMIN_PASSWORD: ${WP_ADMIN_PASSWORD}
       WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL}
       WP_DB_PREFIX: ${WP_DB_PREFIX}
+    secrets:
+      - wp_admin_password 
+      - wp_user_password
+      - db_user_password
     networks:
       - inception
     depends_on:
@@ -55,10 +57,11 @@ services:
     env_file:
       - .env
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    secrets:
+      - db_root_password
+      - db_user_password
     networks:
       - inception
     healthcheck:
@@ -66,23 +69,32 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5 
-
- 
-
 volumes:
   mariadb_data:
     driver: local
     driver_opts:
-    o: bind
-    # ~/home/poverbec/data/mariadb
+      type: none
+      o: bind
+      device: /home/poverbec/data/mariadb
 
   wordpress_data:
     driver: local
-    river_opts:
-    o: bind
-    # ~/home/poverbec/data/wordpress
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/poverbec/data/wordpress
 
 networks:
   inception:
     driver: bridge
+
+secrets:
+  db_root_password:
+    file: ../secrets/db_root_password.txt
+  db_user_password:
+    file: ../secrets/db_user_password.txt
+  wp_admin_password:
+    file: ../secrets/wp_admin_password.txt
+  wp_user_password:
+    file: ../secrets/wp_user_password.txt
 

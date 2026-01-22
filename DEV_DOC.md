@@ -15,3 +15,19 @@ Developer documentation
 
     * Docker rmi($docker images -q)
 * Identify where the project data is stored and how it persists
+
+
+check if wordpress works:
+Curl -lk https://poverbec.42.fr
+
+check for self signed certificate 
+curl --head https://poverbec.42.fr 
+
+
+Execute mariadb setup
+Docker exec -t mariadb sh 
+
+entere Database as root user 
+mysql -u root -p$(cat /run/secrets/db_root_password)
+
+https::/poverbec.42.fr//wp-admin

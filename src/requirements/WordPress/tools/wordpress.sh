@@ -7,10 +7,10 @@ until mysqladmin ping -h mariadb --silent; do sleep 1; done
 
 WP_PATH="/usr/local/bin/wp"
 
-if [ ! -f "WP_PATH"]
+if [ ! -f "$WP_PATH"]
 	curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 	chmod +x wp-cli.phar
-	mv wp-cli.phar "WP_PATH"
+	mv wp-cli.phar "$WP_PATH"
 fi
 wp --info --allow-root
 

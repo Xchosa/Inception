@@ -1,8 +1,10 @@
+mariaDb_Dir = /home/poverbec/data/mariadb
+wordpress_Dir = /home/poverbec/data/wordpress
 
-.PHONY: up down debug-wordpress clean re
 
 
 up: 
+	@mkdir -p $(mariaDb_Dir) $(wordpress_Dir)
 	cd src && docker compose -f docker-compose.yml  up --build
 
 
@@ -29,4 +31,11 @@ clean:
 	cd src && docker compose down -v
 	docker system prune -af
 
+fclean:
+	@rm -rf $(mariaDb_Dir) $(wordpress_Dir)
+	make clean
+
 re: clean up
+
+
+.PHONY: up down debug-wordpress clean re
