@@ -3,9 +3,8 @@
 
 set -e
 
-until mysqladmin ping -h mariadb --silent; do sleep 1; done
-
-WP_PATH="/usr/local/bin/wp"
+until nc -z mariadb 3306; do sleep 1
+done
 
 if [ ! -f "$WP_PATH"]
 	curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar

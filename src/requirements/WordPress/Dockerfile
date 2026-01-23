@@ -3,7 +3,7 @@ FROM debian:bookworm
 
 
 RUN apt update && apt upgrade -y && \
-    apt install -y lsb-release apt-transport-https ca-certificates wget gnupg2 && \
+    apt install -y lsb-release apt-transport-https ca-certificates wget gnupg2 netcat-openbsd && \
     wget -qO /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg && \
     echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list && \
     apt update && \
