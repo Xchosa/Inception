@@ -3,7 +3,7 @@
 set -e
 
 DOMAIN="poverbec.42.fr"
-SSL_DIR="/etc/nginx/certs/"
+SSL_DIR="/etc/nginx/certs"
 SITES_DIR="/etc/nginx/sites-available"
 
 mkdir -p "$SSL_DIR"
