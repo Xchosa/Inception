@@ -44,7 +44,9 @@ services:
     networks:
       - inception
     depends_on:
-      - mariadb
+      mariadb:
+        condition: service_healthy
+    
 
   mariadb:
     build: ./requirements/MariaDB/.
@@ -62,11 +64,12 @@ services:
     secrets:
       - db_root_password
       - db_user_password
+      - wp_admin_password
     networks:
       - inception
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
+      interval: 5s
       timeout: 5s
       retries: 5 
 volumes:

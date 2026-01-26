@@ -32,7 +32,7 @@ clean:
 	docker system prune -af
 
 fclean:
-	@rm -rf $(mariaDb_Dir) $(wordpress_Dir)
+	@rm -rf $(mariaDb_Dir) $(wordpress_Dir) $(SSL_DIR)
 	make clean
 
 re: clean up

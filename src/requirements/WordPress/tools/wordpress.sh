@@ -3,10 +3,16 @@
 
 set -e
 
-until nc -z mariadb 3306; do sleep 1
-done
+#docker handels the waiting "condtion: service healty"
+#until mysqladmin ping -h mariadb -u root -p$(cat /run/secrets/db_root_password) --silent; do
+#    echo "Waiting for MariaDB..."
+#    sleep 2
+#done
 
-if [ ! -f "$WP_PATH"]
+echo "MariaDB is ready!"
+
+
+if [ ! -f "$WP_PATH"] then
 	curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 	chmod +x wp-cli.phar
 	mv wp-cli.phar "$WP_PATH"
