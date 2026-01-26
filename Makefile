@@ -32,6 +32,8 @@ clean:
 	docker system prune -af
 
 fclean:
+#	@sudo chown -R $(USER):$(USER) $(mariaDb_Dir) $(wordpress_Dir) 2>/dev/null || true
+	@sudo chown -R $(USER):$(USER) $(mariaDb_Dir) $(wordpress_Dir) || true
 	@rm -rf $(mariaDb_Dir) $(wordpress_Dir) $(SSL_DIR)
 	make clean
 
