@@ -14,7 +14,7 @@ RUN apt update && apt upgrade -y && apt install -y \
     echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list && \
     apt-get update && \
     apt-get install -y \
-    php8.4-fpm \
+    php8.4-fpm \ 
     php8.4-mysql \
     php8.4-curl \
     php8.4-gd \

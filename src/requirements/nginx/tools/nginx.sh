@@ -8,6 +8,7 @@ SITES_DIR="/etc/nginx/sites-available"
 
 #
 
+
 #mkdir -p "$SSL_DIR"
 
 #cp /run/secrets/certificate.pem  "$SSL_DIR/certificate.pem"
