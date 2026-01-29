@@ -18,10 +18,23 @@
 
         <img class="background" v-bind:src="ImageLink"/>
       </div>
-      <h2>{{ MyName }}</h2>
-      <p>My Age: {{ Age }}</p>
+      <button class="buttonName">
+    
+        Paul Overbeck </button>
 
-      <p>{{ fk_random() }}</p>
+      <button @click="wordpress" >
+        Wordpress</button>
+
+      <button @click="nginx"  >
+        nginx
+      </button>
+
+  
+
+      <button @click="mariadb" >
+        mariadb
+      </button>
+
       <input type="text" v-bind:value="RoundUp"/>
     </section>
   </body>
