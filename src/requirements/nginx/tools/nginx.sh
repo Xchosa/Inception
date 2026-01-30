@@ -2,12 +2,21 @@
 
 set -e
 
-DOMAIN="poverbec.42.fr"
+#DOMAIN="poverbec.42.fr"
 SSL_DIR="/etc/nginx/certs"
 SITES_DIR="/etc/nginx/sites-available"
 
-#
+# landing page /data/wordpress/index.nginx-debian.html
+# in the dirc /landingPage a symlink to the the config wordpress sites 
 
+# create symlink from config file to enabled ried 
+#ln -sf "$SITES_DIR/default" "/etc/nginx/sites-enabled/default"
+
+#check server and return on failure
+#nginx -t
+
+
+#/home/poverbec/data/wordpress/index.nginx-debian.html
 
 #mkdir -p "$SSL_DIR"
 
