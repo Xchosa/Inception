@@ -8,6 +8,10 @@ html {
 
 body {
   margin: 0;
+  /*display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;*/
 }
 
 section {
@@ -62,6 +66,13 @@ button:active {
   background-color: #ec3169;
   border-color: #0a0a0a;
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.26);
+}
+
+.headline {
+  text-align: center;
+  margin: 0.5rem auto;
+  font-size: 3rem;
+  font-weight: bold;
 }
 
 .background {

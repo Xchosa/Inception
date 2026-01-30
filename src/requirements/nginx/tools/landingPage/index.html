@@ -12,8 +12,10 @@
     <script src="https://unpkg.com/vue@3/dist/vue.global.js" defer></script>
     <script src="app.js" defer></script>
   </head>
-  <body>
+  <body> 
     <section id="assignment">
+      <h1 
+        :class="headline"> Inception </h1>
       <div>
 
         <img class="background" v-bind:src="ImageLink"/>
@@ -35,7 +37,9 @@
         mariadb
       </button>
 
-      <input type="text" v-bind:value="RoundUp"/>
+      <button @click="mariadb" >
+        bonus
+      </button>
     </section>
   </body>
 </html>
