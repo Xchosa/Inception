@@ -3,7 +3,7 @@ FROM debian:bookworm
 
 RUN apt update && apt upgrade -y && \
 	apt install -y mariadb-server mariadb-client openssl && \
-	rm -rf /var/lib/apt/lists/*
+	rm -rf /var/lib/apt/lists/* 
     
 # copy files from host to container 
 # relative Dockerfile loccation to absolute path in container
