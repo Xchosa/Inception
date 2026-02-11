@@ -5,6 +5,8 @@ wordpress_Dir = /home/poverbec/data/wordpress
 
 up: 
 	@mkdir -p $(mariaDb_Dir) $(wordpress_Dir)
+	sudo cp /etc/hosts /etc/hosts.backup
+	sudo cp script/hosts /etc/hosts 
 	cd src && docker compose -f docker-compose.yml  up --build
 
 
