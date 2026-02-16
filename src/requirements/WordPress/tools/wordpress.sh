@@ -9,7 +9,12 @@ set -e
 #    sleep 2
 #done
 
-DB_USER_PASS=$(cat /run/secrets/db_user_password)
+
+MYSQL_PASS=$(cat /run/secrets/db_user_password)
+#MYSQL_ROOT=
+WP_ROOT_PASS=$(cat /run/secrets/wp_admin_password)
+WP_USER_PASS=$(cat /run/secrets/wp_user_password)
+
 
 echo "MariaDB is ready!"
 export WP_PATH="/usr/local/bin/wp"
@@ -22,7 +27,7 @@ if [ ! -f "$WP_PATH" ]; then
 	mv wp-cli.phar "$WP_PATH"
 fi
 #check if wp-cli works
-wp --info --allow-root || echo "wp-cli check failed, continuing..."
+#wp --info --allow-root || echo "wp-cli check failed, continuing..."
 
 cd /var/www/html
 
@@ -35,16 +40,16 @@ if [ ! -f "wp-settings.php" ]; then
     wp config create --allow-root \
         --dbname=$MYSQL_DATABASE \
         --dbuser=$MYSQL_USER \
-        --dbpass=$DB_USER_PASS\
+        --dbpass="$(cat /run/secrets/db_user_password)" \
         --dbhost=mariadb:3306 \
 		--dbprefix="$WP_DB_PREFIX"
 
     # 5. Install WordPress
     wp core install --allow-root \
         --url="poverbec.42.fr" \
-         --title="Inception" \
+        --title="Inception" \
         --admin_user=$WP_ADMIN_USER \
-        --admin_password=$WP_ADMIN_PASSWORD \
+        --admin_password=$WP_ROOT_PASS \
         --admin_email="$WP_ADMIN_EMAIL" \
         --skip-email
 fi
@@ -52,7 +57,7 @@ fi
 chown -R www-data:www-data $WP_ROOT
 
 
-exec php-fpm8.4 -F
+exec php-fpm8.2 -F
 
 # https://wp-cli.org/
 #curl -0 https://raw.githubusercontent.com/wp-cli/wp-cli/v2.12.0/utils/wp-completion.bash

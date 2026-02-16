@@ -10,9 +10,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     php8.2-mbstring \
     php8.2-xml \
     php8.2-zip \
+    ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-
+RUN update-ca-certificates
 # copy files from host to container 
 # relative Dockerfile loccation to absolute path in container
 COPY ./tools/wordpress.sh /wordpress.sh

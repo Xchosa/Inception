@@ -15,12 +15,12 @@ services:
     networks:
       - inception
     volumes:
-      #- ./requirements/nginx/conf:/etc/nginx/conf.d
-      #- wordpress_data:/var/www/html
+      - ./requirements/nginx/conf:/etc/nginx/conf.d
+      - wordpress_data:/var/www/html
       - ../secrets/ssl:/etc/nginx/certs:ro
-    #secrets:
-    #  - privKey
-    #  - certificate
+    secrets:
+      - privKey
+      - certificate
 
 
   wordpress:
@@ -45,6 +45,7 @@ services:
       - wp_admin_password 
       - wp_user_password
       - db_user_password
+      - db_root_password
     networks:
       - inception
     depends_on:
@@ -76,6 +77,9 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5 
+
+
+      
 volumes:
   mariadb_data:
     driver: local
@@ -105,10 +109,10 @@ secrets:
     file: ../secrets/wp_admin_password.txt
   wp_user_password:
     file: ../secrets/wp_user_password.txt
-  #privKey:
-  #  file: ../secrets/privKey.pem
-  #certificate:
-  #  file: ../secrets/certificate.pem
+  privKey:
+    file: ../secrets/ssl/privKey.pem
+  certificate:
+    file: ../secrets/ssl/certificate.pem
 
 
 
