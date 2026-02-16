@@ -17,7 +17,6 @@ RUN apt update && apt upgrade -y && \
 
 #RUN rm -f /etc/nginx/sites-enabled/default
 
-#COPY ./conf/nginx.conf  /etc/nginx/nginx.conf
 COPY ./conf/default.conf /etc/nginx/conf.d/default.conf
 
 #COPY ./conf/default.conf  /etc/nginx/nginx.conf

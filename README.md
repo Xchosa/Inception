@@ -1,5 +1,16 @@
 # Inception Project
 
+Setup:
+check if other web server is running 
+if yes stop it 
+sudo systemctl stop apache2
+sudo systemctl disable apache2
+
+
+Wordpress configuration:
+https://poverbec.42.fr/wp-admin
+
+
 🧠 Introduction
 The Inception project is a DevOps-oriented exercise designed to help you master container orchestration using Docker and Docker Compose. Through this project, you'll gain hands-on experience in setting up and managing a complete multi-service infrastructure within a virtualized environment. You’ll learn how to build your own Docker images, configure services to work seamlessly together, and ensure secure and performant inter-container communication. This project touches on a wide range of essential DevOps concepts, including networking, volumes, secure service exposure, and caching.
 

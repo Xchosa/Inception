@@ -28,6 +28,12 @@ debug-nginx:
 # see all running containers
 
 #docker rm [id]
+backup:
+	@mkdir -p ../backup/wordpress_backup
+	cd src && docker-compose exec wordpress wp db export /var/www/html/backup.sql --allow-root --path=/var/www/html
+	cd src && docker cp wordpress:/var/www/html/backup.sql ../../backup/backup.sql
+	cd src && docker-compose exec wordpress rm /var/www/html/backup.sql
+	cd src && docker cp wordpress:/var/www/html/wp-content ../../backup/wordpress_backup/
 
 clean:
 	cd src && docker compose down -v
