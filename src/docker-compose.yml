@@ -41,6 +41,8 @@ services:
       WP_ADMIN_USER: ${WP_ADMIN_USER}
       WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL}
       WP_DB_PREFIX: ${WP_DB_PREFIX}
+      WP_USER: ${WP_USER}
+      WORDPRESS_CONFIG_EXTRA:
     secrets:
       - wp_admin_password 
       - wp_user_password
@@ -51,14 +53,19 @@ services:
     depends_on:
       mariadb:
         condition: service_healthy
+      redis:
+        condition: service_started
 
   redis:
     build:
       context: ./requirements/redisCache
       dockerfile: Dockerfile
     image: redis
-    container_name: redisCache
+    container_name: redis
     restart: on-failure
+    networks:
+      - inception
+      
     
 
   mariadb:

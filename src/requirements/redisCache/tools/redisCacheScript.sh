@@ -1,8 +1,9 @@
-
+#!/bin/bash
 
 set -e
 
-
-#systemctl status redis
-
-#redis-cli ping
+exec redis-server \
+	--bind 0.0.0.0 \
+	--protected-mode no \
+	--daemonize no
+	 # run in foreground

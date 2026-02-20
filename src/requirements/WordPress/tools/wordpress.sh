@@ -35,24 +35,41 @@ cd /var/www/html
 if [ ! -f "wp-settings.php" ]; then
     wp core download --allow-root
     
-    # 4. Create wp-config.php
+    # Create wp-config.php
     # Connect WordPress to MariaDB container
     wp config create --allow-root \
         --dbname=$MYSQL_DATABASE \
         --dbuser=$MYSQL_USER \
-        --dbpass="$(cat /run/secrets/db_user_password)" \
+        --dbpass=$MYSQL_PASS \
         --dbhost=mariadb:3306 \
 		--dbprefix="$WP_DB_PREFIX"
 
-    # 5. Install WordPress
+    #Add Redis configuration
+    cat >> /var/www/html/wp-config.php << 'EOF'
+// Redis Object Cache
+define('WP_CACHE', true);
+define('WP_REDIS_HOST', 'redis');
+define('WP_REDIS_PORT', 6379);
+define('WP_REDIS_TIMEOUT', 1);
+define('WP_REDIS_READ_TIMEOUT', 1);
+define('WP_REDIS_DATABASE', 0);
+EOF
+    # Install WordPress
     wp core install --allow-root \
         --url="poverbec.42.fr" \
         --title="Inception" \
         --admin_user=$WP_ADMIN_USER \
         --admin_password=$WP_ROOT_PASS \
         --admin_email="$WP_ADMIN_EMAIL" \
+        --wp_user="$WP_USER" \
+        --wp_user_password="$WP_USER_PASS" \
         --skip-email
+    # configure Redis Object Cache
+    
 fi
+
+
+
 
 chown -R www-data:www-data /var/www/html
 sed -i 's|listen = /run/php/php8.2-fpm.sock|listen = 9000|' /etc/php/8.2/fpm/pool.d/www.conf
