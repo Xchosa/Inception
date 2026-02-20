@@ -51,6 +51,14 @@ services:
     depends_on:
       mariadb:
         condition: service_healthy
+
+  redis:
+    build:
+      context: ./requirements/redisCache
+      dockerfile: Dockerfile
+    image: redis
+    container_name: redisCache
+    restart: on-failure
     
 
   mariadb:
