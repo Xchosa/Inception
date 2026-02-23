@@ -19,7 +19,7 @@ WP_USER_PASS=$(cat /run/secrets/wp_user_password)
 echo "MariaDB is ready!"
 export WP_PATH="/usr/local/bin/wp"
 export WP_ROOT="/var/www/html"
-export WP_USER="www-data"
+#export WP_USER="www-data"
 
 if [ ! -f "$WP_PATH" ]; then
 	curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
@@ -61,15 +61,22 @@ EOF
         --admin_user=$WP_ADMIN_USER \
         --admin_password=$WP_ROOT_PASS \
         --admin_email="$WP_ADMIN_EMAIL" \
-        --wp_user="$WP_USER" \
-        --wp_user_password="$WP_USER_PASS" \
         --skip-email
     # configure Redis Object Cache
     
 fi
 
-
-
+if ! wp user get "$WP_USER" --allow-root --path=${WP_ROOT}; then
+    echo "Creating WordPress User role: Autor: $WP_USER"
+    wp user create "$WP_USER" "$WP_USER_EMAIL" \
+        --role=author \
+        --user_pass="$WP_USER_PASS" \
+        --allow-root \
+        --path=/var/www/html
+    echo "User $WP_USER created successfully"
+else
+    echo "User $WP_USER already exists"
+fi
 
 chown -R www-data:www-data /var/www/html
 sed -i 's|listen = /run/php/php8.2-fpm.sock|listen = 9000|' /etc/php/8.2/fpm/pool.d/www.conf
