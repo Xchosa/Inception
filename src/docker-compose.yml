@@ -65,8 +65,52 @@ services:
     restart: on-failure
     networks:
       - inception
-      
-    
+  
+  FTP_Server:
+    build:
+      context: ./requirements/FTP_Server
+      image: lscr.io/linuxserver/filezilla:latest
+      dockerfile: Dockerfile
+      container_name: ftp_server
+      #volumes:
+      #- wordpress_data:/var/www/html
+      #ports:
+      #  - "21:21"
+      #  - "21100-21110:21100-21110"
+      #secrets:
+      #  - certificate
+      #  - privKey
+      #networks:
+      #  - inception
+      #restart: unless-stopped
+      environment:
+        - PUID=1000
+        - PGID=1000
+        - TZ=Etc/UTC #Timezone 
+      volumes:
+       - /path/to/config:/config
+      ports:
+        #- 3000:3000 # for HTTP
+        - 3001:3001
+      shm_size: "1gb"
+      restart: unless-stopped
+
+  #sealskin:
+  #  image: lscr.io/linuxserver/sealskin:latest
+  #  container_name: sealskin
+  #  environment:
+  #    - PUID=1000
+  #    - PGID=1000
+  #    - TZ=Etc/UTC
+  #    - "HOST_URL=IP or subdomain.doman.com" #optional
+  #  volumes:
+  #    - /path/to/sealskin/config:/config
+  #    - /path/to/sealskin/storage:/storage
+  #    - /var/run/docker.sock:/var/run/docker.sock
+  #  ports:
+  #    - 8443:8443
+  #    - 8000:8000 #optional
+  #  restart: unless-stopped
 
   mariadb:
     build: ./requirements/MariaDB/.

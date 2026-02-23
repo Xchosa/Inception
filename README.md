@@ -72,6 +72,8 @@ Wordpress: 	https://developer.wordpress.org/advanced-administration/before-insta
 
 MariaDB Docker Guide:	https://mariadb.com/docs?q=docker
 
+FTP_Server: https://creativethemes.com/blocksy/blog/what-is-ftp-and-how-to-use-it-in-wordpress/#:~:text=That's%20where%20FTP%20(File%20Transfer,plugin%20that%20broke%20your%20site.
+
 Key Configuration Files
 Container orchestration: docker-compose.yml
 NGINX config: default.conf
