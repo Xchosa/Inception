@@ -11,15 +11,16 @@ set -e
 
 
 MYSQL_PASS=$(cat /run/secrets/db_user_password)
-#MYSQL_ROOT=
 WP_ROOT_PASS=$(cat /run/secrets/wp_admin_password)
 WP_USER_PASS=$(cat /run/secrets/wp_user_password)
+
+
 
 
 echo "MariaDB is ready!"
 export WP_PATH="/usr/local/bin/wp"
 export WP_ROOT="/var/www/html"
-#export WP_USER="www-data"
+
 
 if [ ! -f "$WP_PATH" ]; then
 	curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
@@ -62,20 +63,20 @@ EOF
         --admin_password=$WP_ROOT_PASS \
         --admin_email="$WP_ADMIN_EMAIL" \
         --skip-email
-    # configure Redis Object Cache
-    
 fi
 
-if ! wp user get "$WP_USER" --allow-root --path=${WP_ROOT}; then
-    echo "Creating WordPress User role: Autor: $WP_USER"
-    wp user create "$WP_USER" "$WP_USER_EMAIL" \
-        --role=author \
-        --user_pass="$WP_USER_PASS" \
-        --allow-root \
-        --path=/var/www/html
-    echo "User $WP_USER created successfully"
-else
-    echo "User $WP_USER already exists"
+if [ "$WP_USER" != "$WP_ADMIN_USER" ]; then
+    if ! wp user get "$WP_USER" --allow-root --path=${WP_ROOT} > /dev/null 2>&1; then
+        echo "Creating WordPress User role: Author: $WP_USER"
+        wp user create "$WP_USER" "$WP_USER_EMAIL" \
+            --role=author \
+            --user_pass="$WP_USER_PASS" \
+            --allow-root \
+            --path=/var/www/html
+        echo "User $WP_USER created successfully"
+    else
+        echo "User $WP_USER already exists"
+    fi
 fi
 
 chown -R www-data:www-data /var/www/html
@@ -89,7 +90,3 @@ exec php-fpm8.2 -F
 #curl -0 https://raw.githubusercontent.com/wp-cli/wp-cli/v2.12.0/utils/wp-completion.bash
 #source /FULL/PATH/TO/wp-completion.bash
 #source ~/.bash_profile
-
-
-## jetzt muss mnoch WP Core gedownloaded werden
-#	 WP user/admin soll von mariadb nebehmen 

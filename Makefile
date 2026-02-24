@@ -26,7 +26,7 @@ debug-nginx:
 
 #docker container ls -a 
 down:
-	docker-compose down
+	cd src && docker compose down
 # see all running containers
 
 #docker rm [id]

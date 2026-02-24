@@ -34,17 +34,9 @@ done
 mysql -e "CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE};"
 mysql -e "CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${db_user_password}';" 
 mysql -e "GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* TO '${MYSQL_USER}'@'%';"
-
-#mysql -e "GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* TO '${WP_ADMIN_USER}'@'%';"
-
 mysql -e "FLUSH PRIVILEGES" || echo "Failed on FLUSH PRIVILEGES"
 
-#mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${db_root_password}';"
 
-# shutdown server before execute 
-#mysqladmin shutdown --socket=/var/run/mysqld/mysqld.sock 
-
-#mysqladmin shutdown -u root 
 mysqladmin shutdown --socket=/var/run/mysqld/mysqld.sock 
 wait $MYSQL_PID
 
@@ -53,9 +45,5 @@ wait $MYSQL_PID
 #exec mysqld_safe --datadir=/var/lib/mysql
 
 exec mysqld --datadir=/var/lib/mysql --user=mysql --bind-address=0.0.0.0
-#make fclean does not work 
-#last errro 
-#mariadb  | ERROR 1064 (42000) at line 1: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'PRIVILEDGES ON 'mydb. * TO 'paul'@'%'' at line 1
-
 
 #so eigentlih 

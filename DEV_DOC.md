@@ -31,3 +31,6 @@ entere Database as root user
 mysql -u root -p$(cat /run/secrets/db_root_password)
 
 https::/poverbec.42.fr//wp-admin
+
+Build a single container:
+docker compose up --build wordpress
