@@ -81,10 +81,10 @@ fi
 
 chown -R www-data:www-data /var/www/html
 sed -i 's|listen = /run/php/php8.2-fpm.sock|listen = 9000|' /etc/php/8.2/fpm/pool.d/www.conf
-#sed -i '/find/replace|listen = /run/php/php8.2-fpm.sock|listen = 9000 
 
-#default listens to a local file / socket 
+
 exec php-fpm8.2 -F
+#default listens to a local file / socket 
 
 # https://wp-cli.org/
 #curl -0 https://raw.githubusercontent.com/wp-cli/wp-cli/v2.12.0/utils/wp-completion.bash

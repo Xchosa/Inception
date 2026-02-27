@@ -3,7 +3,7 @@ wordpress_Dir = /home/poverbec/data/wordpress
 
 
 
-up: 
+up: sync-time
 	@mkdir -p $(mariaDb_Dir) $(wordpress_Dir)
 #	sudo cp /etc/hosts /etc/hosts.backup
 	sudo cp script/hosts /etc/hosts 
@@ -37,9 +37,15 @@ backup:
 	cd src && docker-compose exec wordpress rm /var/www/html/backup.sql
 	cd src && docker cp wordpress:/var/www/html/wp-content ../../backup/wordpress_backup/
 
+
+sync-time:
+	sudo timedatectl set-ntp on
+	sudo timedatectl status
+
 clean:
 	cd src && docker compose down -v
 	docker system prune -af
+#	docker system prune -af --volume
 
 fclean:
 #	@sudo chown -R $(USER):$(USER) $(mariaDb_Dir) $(wordpress_Dir) 2>/dev/null || true
@@ -50,4 +56,4 @@ fclean:
 re: clean up
 
 
-.PHONY: up down debug-wordpress clean re
+.PHONY: up down debug-wordpress clean re sync-time

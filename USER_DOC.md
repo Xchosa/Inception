@@ -100,6 +100,8 @@ openssl s_client -connect poverbec.42.fr:443 -servername poverbec.42.fr
 # test FTP
 lftp -u SuperUser localhost
 -> enter password for wp_admin 
+(the inbuild ftp server to transfer your secrets 
+sftp://<user>@localhost) to mount your VM File directory
 
 
 Data Persistence

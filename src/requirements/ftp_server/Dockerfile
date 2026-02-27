@@ -7,13 +7,14 @@ RUN apt update && apt upgrade -y && \
 	vsftpd && \
 	rm -rf /var/lib/apt/lists/* 
 
-COPY ./tools/ftp_server.sh /ftp_server.sh
+# copy to container root dirc , place nf file to  
+COPY ./tools/ftp_server.sh /ftp_server.sh 
 COPY ./conf/vsftpd.conf /etc/vsftpd.conf
 
 RUN chmod +x /ftp_server.sh
 
 # Expose FTP ports
-EXPOSE 21 20 21100-21110
+EXPOSE 21 30000-30009
 
 ENTRYPOINT  [ "/ftp_server.sh" ]
 

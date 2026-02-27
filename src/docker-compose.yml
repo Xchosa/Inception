@@ -56,6 +56,11 @@ services:
         condition: service_healthy
       redis:
         condition: service_started
+    healthcheck:
+      test: ["CMD", "php-fpm8.2", "-t"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
 
   redis:
     build:
@@ -75,20 +80,23 @@ services:
     container_name: ftp_server
     ports:
       - "21:21"
-      - "21100-21110:21100-21110"
+      - "30000-30009:30000-30009"
+      #- "21100-21110:21100-21110"
     volumes:
       - wordpress_data:/var/www/html
     environment:
-      WP_ADMIN_USER: ${WP_ADMIN_USER}
-      WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL}
+      FTP_USER: ${FTP_USER}
     secrets:
       - FTPprivKey
       - FTPcertificate
-      - wp_admin_password
+      - sftp_password
     shm_size: "1gb"
     restart: unless-stopped
     networks:
       - inception
+    depends_on:
+      wordpress:
+        condition: service_healthy
 
 
   mariadb:
@@ -151,9 +159,11 @@ secrets:
     file: ../secrets/ssl/privKey.pem
   certificate:
     file: ../secrets/ssl/certificate.pem
-  FTPprivKey:
-    file: ../secrets/sftpSSL/ftp-cert.pem
   FTPcertificate:
+    file: ../secrets/sftpSSL/ftp-cert.pem
+  FTPprivKey:
     file: ../secrets/sftpSSL/ftp-key.pem
+  sftp_password:
+    file: ../secrets/sftp_password.txt
 
 
