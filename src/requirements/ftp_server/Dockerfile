@@ -4,6 +4,8 @@ FROM debian:bookworm
 
 RUN apt update && apt upgrade -y && \ 
 	apt install -y \
+	net-tools \
+	iproute2 \
 	vsftpd && \
 	rm -rf /var/lib/apt/lists/* 
 

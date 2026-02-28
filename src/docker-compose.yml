@@ -81,7 +81,6 @@ services:
     ports:
       - "21:21"
       - "30000-30009:30000-30009"
-      #- "21100-21110:21100-21110"
     volumes:
       - wordpress_data:/var/www/html
     environment:
