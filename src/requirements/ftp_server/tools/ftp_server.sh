@@ -3,7 +3,10 @@
 
 set -e
 
-export FTP_PASSWORD=$(cat /run/secrets/sftp_password | tr -d '\n\r')
+
+#export FTP_PASSWORD=$(cat /run/secrets/sftp_password | tr -d '\n\r')
+
+export FTP_PASSWORD=$(cat /run/secrets/wp_admin_password | tr -d '\n\r')
 
 #copy certificates from secrets to container secrets
 #if [ ! -f /run/secrets/FTPcertificate ] || [ ! -f /run/secrets/FTPprivKey ]; then
@@ -14,7 +17,7 @@ export FTP_PASSWORD=$(cat /run/secrets/sftp_password | tr -d '\n\r')
 echo "FTP server configured without SSL"
 
 echo "Setting up FTP user: $FTP_USER"
-echo "FTP_PASSWORD length: ${#FTP_PASSWORD}"
+
 useradd -u 1001 -g www-data -d /var/www/html -s /bin/bash "$FTP_USER" 2>/dev/null || echo "User already exists"
 if echo "$FTP_USER:$FTP_PASSWORD" | chpasswd 2>&1; then
     echo "Password set successfully"
@@ -34,7 +37,7 @@ chown -R $FTP_USER:www-data /var/www/html/wp-content
 chmod -R 775 /var/www/html/wp-content
 
 echo "Starting vsftpd in foreground..."
-exec /usr/sbin/vsftpd /etc/vsftpd.conf
+#exec /usr/sbin/vsftpd /etc/vsftpd.conf
 
 
 

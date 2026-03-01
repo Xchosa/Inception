@@ -54,6 +54,17 @@ define('WP_REDIS_PORT', 6379);
 define('WP_REDIS_TIMEOUT', 1);
 define('WP_REDIS_READ_TIMEOUT', 1);
 define('WP_REDIS_DATABASE', 0);
+
+// FTP plugin 
+define('FS_METHOD', 'ftpext');
+define('FTP_HOST', 'ftp_server');
+define('FTP_USER', getenv('WP_ADMIN_USER'));
+define('FTP_PASS', file_get_contents('/run/secrets/wp_admin_password'));
+define('FTP_SSL', false);
+define('FTP_BASE', '/var/www/html/');
+define('FTP_CONTENT_DIR', '/var/www/html/wp-content/');
+define('FTP_PLUGIN_DIR', '/var/www/html/wp-content/plugins/');
+define('FTP_THEME_DIR', '/var/www/html/wp-content/themes/');
 EOF
     # Install WordPress
     wp core install --allow-root \

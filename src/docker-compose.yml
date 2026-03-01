@@ -86,6 +86,7 @@ services:
     environment:
       FTP_USER: ${FTP_USER}
     secrets:
+      - wp_admin_password
       - FTPprivKey
       - FTPcertificate
       - sftp_password
