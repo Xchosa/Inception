@@ -6,19 +6,12 @@ set -e
 export FTP_PASSWORD=$(cat /run/secrets/sftp_password | tr -d '\n\r')
 
 #copy certificates from secrets to container secrets
-if [ -f /run/secrets/FTPcertificate ] && [ -f /run/secrets/FTPprivKey ]; then
-    echo "Copying SSL certificates to proper locations..."
-    mkdir -p /etc/ssl/certs /etc/ssl/private
-    cp /run/secrets/FTPcertificate /etc/ssl/certs/ftp-cert.pem
-    cp /run/secrets/FTPprivKey /etc/ssl/private/ftp-key.pem
-    chmod 644 /etc/ssl/certs/ftp-cert.pem
-    chmod 600 /etc/ssl/private/ftp-key.pem
-    echo "SSL certificates configured"
-else 
-    echo "ERROR: SSL certificates not found in secrets!"
-    ls -la /run/secrets/ || echo "No secrets directory found"
-    exit 1
-fi
+#if [ ! -f /run/secrets/FTPcertificate ] || [ ! -f /run/secrets/FTPprivKey ]; then
+#    echo "ERROR: SSL certificates not found in secrets!"
+#    exit 1
+#fi
+#echo "SSL certificates found"
+echo "FTP server configured without SSL"
 
 echo "Setting up FTP user: $FTP_USER"
 echo "FTP_PASSWORD length: ${#FTP_PASSWORD}"
@@ -33,10 +26,12 @@ fi
 
 chown -R $FTP_USER:www-data /var/www/html
 chmod -R 775 /var/www/html
-
 mkdir -p /var/run/vsftpd/empty
-echo "Starting vsftp service..."
 
+#upload directory 
+mkdir -p /var/www/html/wp-content/uploads
+chown -R $FTP_USER:www-data /var/www/html/wp-content
+chmod -R 775 /var/www/html/wp-content
 
 echo "Starting vsftpd in foreground..."
 exec /usr/sbin/vsftpd /etc/vsftpd.conf

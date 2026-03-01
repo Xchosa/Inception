@@ -2,7 +2,7 @@ Developer documentation
 
 
 
-* Set up the environment from scratch (prerequisites, configuration files, secrets).
+Set up the environment from scratch (prerequisites, configuration files, secrets).
   generate a secrets/sftpSSL directory and a secrets/ssl directory to store the selfsigned certtificat and key with openssl 
 
   e.g. with openssl genrsa -des3 -out ca.key 2048
@@ -14,8 +14,28 @@ Developer documentation
     certificate.pem
     privKey.pem
 
+for using the FTP server
+needed dependencies
+sudo apt install lftp
 
-* Build and launch the project using the Makefile and Docker Compose.
+lftp -u <FTP_USER_env> localhost:21
+
+<FTP_USER_PASS_secrets>
+upload via "put"
+e.g. put /home/<user>/<UserDance.mp4> 
+ls 
+quit or 
+
+(for connecting to VM Filedirectory
+ => sftp://<VM_USER>@localhost/ )
+
+check pwd or ls -la
+
+cd wp-content/uploads
+e.g. https://poverbec.42.fr/wp-content/uploads/test.txt
+
+
+Build and launch the project using the Makefile and Docker Compose.
   * make up 	-> building up
   * every other command descriped in Makefile 
   make clean
@@ -28,7 +48,7 @@ Developer documentation
   * make fclean -> delete all containers
 
 
-* Use relevant commands to manage the containers and volumes.
+Use relevant commands to manage the containers and volumes.
   * docker ps
   * docker down - delelte volumes
   * docker stop
@@ -39,9 +59,18 @@ Developer documentation
 
    * Docker rmi($docker images -q)
 
+Check if specific Container is running:
+e.g. FTP server
+  docker ps | grep ftp
+
+Stop one specific Container 
+docker stop ftp_server
+
+Check if vsftpd process is running
+docker exec ftp_server ps aux | grep vsftpd
 
 
-* Identify where the project data is stored and how it persists
+Identify where the project data is stored and how it persists
 
 
 check if wordpress works:
