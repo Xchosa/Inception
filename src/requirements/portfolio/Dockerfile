@@ -1,13 +1,12 @@
-
 FROM debian:bookworm-slim
 
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    nginx \
+     && rm -rf /var/lib/apt/lists/*
 
-RUN apt update && apt upgrade -y && \
-	rm -rf /var/lib/apt/lists/*
+COPY ./tools/ /var/www/html/
+COPY ./conf/default.conf /etc/nginx/conf.d/default.conf
 
-# copy current directory in container
-COPY ./tools/ /
+EXPOSE 8080
 
-EXPOSE 80
-
-CMD [ "executable", " -g", "daemoon off" ]
+CMD ["nginx", "-g" , "daemon off;"]

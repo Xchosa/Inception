@@ -128,10 +128,10 @@ services:
     build:
       context: ./requirements/portfolio
       dockerfile: Dockerfile
-    image: portfolio
+    container_name: portfolio
     restart: on-failure
     networks:
-      - Inception
+      - inception
       
 volumes:
   mariadb_data:

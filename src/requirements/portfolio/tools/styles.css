@@ -4,6 +4,7 @@
 
 html {
   font-family: 'Jost', sans-serif;
+  /*background-color: #0a0a1a;*/
 }
 
 body {
@@ -12,6 +13,7 @@ body {
   align-items: center;
   justify-content: center;
   height: 100vh;*/
+  background-color: #0a0a1a;
 }
 
 section {
@@ -22,17 +24,26 @@ section {
   text-align: center;
 }
 
+h1 {
+  text-align: center;
+  margin: 0.5rem auto;
+  font-size: 3rem;
+  font-weight: bold;
+  color: #60a5fa;
+}
+
+
 h2 {
   font-size: 2rem;
-  border-bottom: 4px solid #ccc;
-  color: #970076;
+  border-bottom: 4px solid #1e3a8a;
+  color: #60a5fa;
   margin: 0 0 1rem 0;
 }
 
 p {
   font-size: 1.25rem;
   font-weight: bold;
-  background-color: #970076;
+  background-color: #1e3a8a;
   padding: 0.5rem;
   color: white;
   border-radius: 25px;
@@ -40,32 +51,46 @@ p {
 
 input {
   font: inherit;
-  border: 1px solid #ccc;
+  border: 1px solid #1e3a8a;
+  background-color: #0a0a1a;
+  color: white;
 }
 
 input:focus {
   outline: none;
-  border-color: #1b995e;
-  background-color: #d7fdeb;
+  border-color: #3b82f6;
+  background-color: #1e3a8a;
+}
+
+.button-container {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.button-container button {
+  padding: 10px 20px;
+  cursor: pointer;
 }
 
 button {
   font: inherit;
   cursor: pointer;
-  border: 1px solid #ff0000;
-  background-color: #ff000d;
+  border: 2px solid #1e40af;
+  background-color: #0f172a;
   color: white;
   padding: 0.5rem 1rem;
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.26);
   display: block;
-  margin: 0.5rem auto ;
+  margin: 0.5rem auto;
 }
 
 button:hover,
 button:active {
-  background-color: #ec3169;
-  border-color: #0a0a0a;
-  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.26);
+  background-color: #1e293b;
+  border-color: #3b82f6;
+  box-shadow: 1px 1px 4px rgba(59, 130, 246, 0.5);
 }
 
 .headline {
@@ -73,26 +98,27 @@ button:active {
   margin: 0.5rem auto;
   font-size: 3rem;
   font-weight: bold;
+  color: #60a5fa;
 }
 
 .background {
   display: block;
   margin: 0 auto;
   max-width: 60%;
-  height: auto;;
+  height: auto;
 }
 
 .buttonStandard {
   font: inherit;
   cursor: pointer;
-  border: 1px solid #ff0077;
-  background-color: #ff0077;
+  border: 2px solid #1e40af;
+  background-color: #0f172a;
   color: white;
   padding: 0.05rem 1rem;
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.26);
 }
 
-.buttonName{
-  background-color: #ec3131;
-  border-color: #0a0a0a;
+.buttonName {
+  background-color: #0f172a;
+  border-color: #1e40af;
 }

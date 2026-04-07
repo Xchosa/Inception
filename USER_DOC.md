@@ -4,11 +4,35 @@ User documentation
 Services Overview
 The Inception stack provides a complete web hosting environment with the following services:
 
-Service		Purpose									Access Point
-NGINX		Reverse proxy with SSL/TLS termination	Port 443 (HTTPS)
-WordPress	Content management system				https://poverbec.42.fr
-MariaDB		Database backend for WordPress			Internal network only
-Redis		Caching layer for performance			Internal network only
+
+## Services
+
+**NGINX** - Reverse proxy with TLS 1.3 encryption on port 443
+
+**WordPress** - PHP-FPM application server connected to MariaDB and Redis
+
+**MariaDB** - Database backend with persistent storage
+
+**Redis** - Caching layer for WordPress optimization
+
+**FTP Server** - File transfer access to WordPress files (port 21, 30000-30009)
+
+**Portfolio** - Static website showcasing projects (https://poverbec.42.fr/portfolio)
+
+
+
+# Test WordPress
+curl -Ik https://poverbec.42.fr
+
+# Access MariaDB
+docker exec -it mariadb mysql -u paul -p$(cat /run/secrets/db_user_password) mydb
+
+# Test Redis
+docker exec -it redis redis-cli ping
+
+# Check FTP (requires lftp)
+lftp -u paulFTP localhost:21
+
 
 
 All services communicate through a secure Docker network with SSL encryption enforced.
