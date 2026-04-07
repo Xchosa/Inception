@@ -124,7 +124,14 @@ services:
       timeout: 5s
       retries: 5 
 
-
+  portfolio:
+    build:
+      context: ./requirements/portfolio
+      dockerfile: Dockerfile
+    image: portfolio
+    restart: on-failure
+    networks:
+      - Inception
       
 volumes:
   mariadb_data:

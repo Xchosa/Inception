@@ -125,6 +125,9 @@ make debug-nginx
 docker logs --follow [container_name]
 
 
+# run single Container
+docker run -p8000:80 website 
+
 Service Dependencies
 Services start in order:
 

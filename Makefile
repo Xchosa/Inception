@@ -5,7 +5,8 @@ wordpress_Dir = /home/poverbec/data/wordpress
 
 up: sync-time
 	@mkdir -p $(mariaDb_Dir) $(wordpress_Dir)
-	bash ./create_default_credentials.sh
+	bash ./create_default_env.sh
+	bash ./create_default_secrets.sh
 #	sudo cp /etc/hosts /etc/hosts.backup
 	sudo cp script/hosts /etc/hosts 
 	cd src && docker compose -f docker-compose.yml  up --build

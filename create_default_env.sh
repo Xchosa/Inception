@@ -39,8 +39,6 @@ REDIS_HOST=
 REDIS_PORT=6379
 
 
-
-
 EOF
 
 			echo ".env file created at $ENV_FILE"
@@ -58,3 +56,6 @@ EOF
 else
 	echo ".env file already exists."
 fi
+
+
+

@@ -2,8 +2,6 @@
 
 set -e
 
-# compose mounted required files in the container
-# mounts secret to /run/secrets/ 
 
 export db_root_password=$(cat /run/secrets/db_root_password)
 export db_user_password=$(cat /run/secrets/db_user_password)
@@ -19,12 +17,8 @@ if [ ! -d "/var/lib/mysql/mysql" ]; then
 fi
 
 
-#kein eigenes error handling mit sql save, container soll crashen wenn mysql schiefgeht , und nicht nur mysql save erneut gestartet werden
-# soll als PID 1 ausgefuehrt werden 
-
-#run mariadb as user  (& ->background) lissten to all network interfaces -> wordpress container connects form docker network
 mysqld --datadir=/var/lib/mysql  --user=mysql --bind-address=0.0.0.0 &
-MYSQL_PID=$! 	#hold pid of the last background process / ccapture it 
+MYSQL_PID=$! 	#hold pid of the last background process 
 
 until mysqladmin ping --silent; do
 	sleep 1
@@ -40,10 +34,5 @@ mysql -e "FLUSH PRIVILEGES" || echo "Failed on FLUSH PRIVILEGES"
 mysqladmin shutdown --socket=/var/run/mysqld/mysqld.sock 
 wait $MYSQL_PID
 
-#production mode 
-#Safe wrapper with auto-restart, logging, proper shutdown
-#exec mysqld_safe --datadir=/var/lib/mysql
-
 exec mysqld --datadir=/var/lib/mysql --user=mysql --bind-address=0.0.0.0
 
-#so eigentlih 
