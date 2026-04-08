@@ -4,9 +4,9 @@
 set -e
 
 
-#export FTP_PASSWORD=$(cat /run/secrets/sftp_password | tr -d '\n\r')
 
-export FTP_PASSWORD=$(cat /run/secrets/wp_admin_password | tr -d '\n\r')
+
+FTP_PASSWORD=$(cat /run/secrets/wp_admin_password | tr -d '\n\r')
 
 #copy certificates from secrets to container secrets
 #if [ ! -f /run/secrets/FTPcertificate ] || [ ! -f /run/secrets/FTPprivKey ]; then
@@ -37,9 +37,6 @@ chown -R $FTP_USER:www-data /var/www/html/wp-content
 chmod -R 775 /var/www/html/wp-content
 
 echo "Starting vsftpd in foreground..."
-#exec /usr/sbin/vsftpd /etc/vsftpd.conf
-
-
 
 
 exec vsftpd /etc/vsftpd.conf

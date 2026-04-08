@@ -15,16 +15,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 RUN update-ca-certificates
-# copy files from host to container 
-# relative Dockerfile loccation to absolute path in container
+
 COPY ./tools/wordpress.sh /wordpress.sh
 
-#add execute permission
+
 RUN chmod +x /wordpress.sh
 
 
-# run before CMD 
-#wordpress becomes the argument to entrypoint 
-# /wordpress.sh php-fpm8 -F 
 ENTRYPOINT  [ "/wordpress.sh" ]
 

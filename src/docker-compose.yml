@@ -119,13 +119,13 @@ services:
       - wp_admin_password
     networks:
       - inception
-    #healthcheck:
-    #  #test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-    #  test: ["CMD", "sh", "-c", "mysql -h localhost -u root -p$${db_root_password}"]
-    #  interval: 10s
-    #  timeout: 5s
-    #  retries: 5 
-    #  start_period: 30s
+    healthcheck:
+    #test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD", "sh", "-c", "mysql -h localhost -u root -p$${db_root_password}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5 
+      start_period: 30s
 
   portfolio:
     build:
