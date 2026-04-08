@@ -17,6 +17,13 @@ WP_PATH="/usr/local/bin/wp"
 WP_ROOT="/var/www/html"
 
 
+echo "DEBUG: MYSQL_PASS value is: $MYSQL_PASS"
+echo "DEBUG: MYSQL_USER value is: $MYSQL_USER"
+echo "DEBUG: MYSQL_DATABASE value is: $MYSQL_DATABASE"
+echo $WP_ADMIN_USER
+echo $WP_ROOT_PASS 
+echo $WP_ADMIN_EMAIL
+
 if [ ! -f "$WP_PATH" ]; then
 	curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 	chmod +x wp-cli.phar
@@ -28,10 +35,8 @@ fi
 cd /var/www/html
 
 
-if [ ! -f "wp-settings.php" ]; then
+if [ ! -f "wp-config.php" ]; then
     wp core download --allow-root
-    
-    # Create wp-config.php
     wp config create --allow-root \
         --dbname=$MYSQL_DATABASE \
         --dbuser=$MYSQL_USER \
@@ -39,9 +44,6 @@ if [ ! -f "wp-settings.php" ]; then
         --dbhost=mariadb:3306 \
 		--dbprefix="$WP_DB_PREFIX"
 
-    #echo "DEBUG: Checking wp-config.php after creation..."
-    #ls -la /var/www/html/wp-config.php
-    #pwd
 
     #Add Redis configuration
     cat >> /var/www/html/wp-config.php << 'EOF'
@@ -64,7 +66,8 @@ define('FTP_CONTENT_DIR', '/var/www/html/wp-content/');
 define('FTP_PLUGIN_DIR', '/var/www/html/wp-content/plugins/');
 define('FTP_THEME_DIR', '/var/www/html/wp-content/themes/');
 EOF
-    # Install WordPress
+
+
     wp core install --allow-root \
         --url="poverbec.42.fr" \
         --title="Inception" \
@@ -74,10 +77,13 @@ EOF
         --skip-email
 fi
 
+if [ -f /var/www/html/wp-config.php ]; then
+    echo "wp-config.php exists"
+    ls -la /var/www/html/wp-config.php
+else
+    echo "wp-config.php does not exist"
+fi
 
-echo "DEBUG: Before user creation, wp-config.php exists?"
-ls -la /var/www/html/wp-config.php
-pwd
 
 if [ "$WP_USER" != "$WP_ADMIN_USER" ]; then
     if ! wp user get "$WP_USER" --allow-root --path=${WP_ROOT} > /dev/null 2>&1; then
