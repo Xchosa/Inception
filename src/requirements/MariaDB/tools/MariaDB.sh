@@ -21,14 +21,16 @@ if [ ! -d "/var/lib/mysql/mysql" ]; then
 fi
 
 # env und config ueberschneiden sich nicht 
-
+# 
 #exec mysqld --datadir=/var/lib/mysql --user=mysql --bind-address=0.0.0.0
 
 #setup mode 
-exec mysqld --user=mysql
-
+#exec mysqld --user=mysql
+cat << EOF > .tmp/initmariadb.sql
 mysql -e "CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE};"
 mysql -e "CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${db_user_password}';" 
 mysql -e "GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* TO '${MYSQL_USER}'@'%';"
 mysql -e "FLUSH PRIVILEGES" || echo "Failed on FLUSH PRIVILEGES"
+EOF
 
+exec mysqld --user=mysql --init-file=/tmp/initmariadb.sql
