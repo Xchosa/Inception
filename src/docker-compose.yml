@@ -47,6 +47,7 @@ services:
       - wp_user_password
       - db_user_password
       - db_root_password
+      
     networks:
       - inception
     depends_on:
