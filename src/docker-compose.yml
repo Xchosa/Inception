@@ -119,10 +119,12 @@ services:
     networks:
       - inception
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 5s
+      #test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD", "sh", "-c", "mysql -h localhost -u root -p${db_root_password} -e 'SELECT 1'"]
+      interval: 10s
       timeout: 5s
       retries: 5 
+      start_period: 30s
 
   portfolio:
     build:

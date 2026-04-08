@@ -18,11 +18,11 @@ fi
 
 
 mysqld --datadir=/var/lib/mysql  --user=mysql --bind-address=0.0.0.0 &
-MYSQL_PID=$! 	#hold pid of the last background process 
+#MYSQL_PID=$! 	#hold pid of the last background process 
 
-until mysqladmin ping --silent; do
-	sleep 1
-done
+#until mysqladmin ping --silent; do
+#	sleep 1
+#done
 
 #setup mode 
 mysql -e "CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE};"
@@ -32,7 +32,7 @@ mysql -e "FLUSH PRIVILEGES" || echo "Failed on FLUSH PRIVILEGES"
 
 
 mysqladmin shutdown --socket=/var/run/mysqld/mysqld.sock 
-wait $MYSQL_PID
+#wait $MYSQL_PID
 
 exec mysqld --datadir=/var/lib/mysql --user=mysql --bind-address=0.0.0.0
 
