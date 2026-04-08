@@ -20,6 +20,7 @@ if [ ! -d "/var/lib/mysql/mysql" ]; then
 	chown -R mysql:mysql /var/lib/mysql
 fi
 
+# env und config ueberschneiden sich nicht 
 
 #exec mysqld --datadir=/var/lib/mysql --user=mysql --bind-address=0.0.0.0
 

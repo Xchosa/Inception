@@ -118,7 +118,6 @@ services:
     networks:
       - inception
     healthcheck:
-    #test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       test: ["CMD", "sh", "-c", "mysql -h localhost -u root -p$${db_root_password}"]
       interval: 10s
       timeout: 5s
