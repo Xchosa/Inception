@@ -26,8 +26,7 @@ services:
     build: ./requirements/WordPress/.
     container_name: wordpress
     volumes:
-      - wordpress_data:/var/www/html # wordpress volume 
-      # configure own page path
+      - wordpress_data:/var/www/html
     restart: on-failure
     expose:
       - 9000
@@ -42,7 +41,7 @@ services:
       WP_DB_PREFIX: ${WP_DB_PREFIX}
       WP_USER: ${WP_USER}
       WP_USER_EMAIL: ${WP_USER_EMAIL}
-      WORDPRESS_CONFIG_EXTRA:
+      FTP_USER: ${FTP_USER}
     secrets:
       - wp_admin_password 
       - wp_user_password
@@ -106,8 +105,6 @@ services:
     restart: on-failure
     expose:
       - 3306
-    #ports: nicht freigegeben , for docs 
-    #  - "3306:3306"
     env_file:
       - .env
     environment:

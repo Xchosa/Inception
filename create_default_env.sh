@@ -18,7 +18,7 @@ if [ ! -f $ENV_FILE ]; then
 MYSQL_ROOT_PASSWORD=helloRoot
 MYSQL_DATABASE=mydb
 MYSQL_USER=paul
-MYSQL_PASSWORD=halloSQL
+
 
 DOMAIN_Name=poverbec.42.fr
 

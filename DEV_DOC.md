@@ -277,6 +277,9 @@ docker exec nginx nginx -t
 
 docker build .            build current image 
 ## Troubleshooting
+get a endless loop in a containter
+#ping -t 127.0.0.1 > /dev/null 2>&1 &
+docker logs <container_name>
 
 ### Container Exits Immediately
 
@@ -309,10 +312,6 @@ Inception/
 │       ├── wordpress/
 │       ├── mariadb/
 │       └── ftp_server/
-
-
-	
-
 |
 └── data/                   # Persistent volume data (created at runtime)
     ├── mariadb/

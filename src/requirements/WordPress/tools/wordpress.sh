@@ -3,12 +3,7 @@
 
 set -e
 
-#docker handels the waiting "condtion: service healty"
-#until mysqladmin ping -h mariadb -u root -p$(cat /run/secrets/db_root_password) --silent; do
-#    echo "Waiting for MariaDB..."
-#    sleep 2
-#done
-
+#ping -t 127.0.0.1 > /dev/null 2>&1 &
 
 MYSQL_PASS=$(cat /run/secrets/db_user_password)
 WP_ROOT_PASS=$(cat /run/secrets/wp_admin_password)
@@ -18,8 +13,8 @@ WP_USER_PASS=$(cat /run/secrets/wp_user_password)
 
 
 echo "MariaDB is ready!"
-export WP_PATH="/usr/local/bin/wp"
-export WP_ROOT="/var/www/html"
+WP_PATH="/usr/local/bin/wp"
+WP_ROOT="/var/www/html"
 
 
 if [ ! -f "$WP_PATH" ]; then
@@ -37,13 +32,16 @@ if [ ! -f "wp-settings.php" ]; then
     wp core download --allow-root
     
     # Create wp-config.php
-    # Connect WordPress to MariaDB container
     wp config create --allow-root \
         --dbname=$MYSQL_DATABASE \
         --dbuser=$MYSQL_USER \
         --dbpass=$MYSQL_PASS \
         --dbhost=mariadb:3306 \
 		--dbprefix="$WP_DB_PREFIX"
+
+    #echo "DEBUG: Checking wp-config.php after creation..."
+    #ls -la /var/www/html/wp-config.php
+    #pwd
 
     #Add Redis configuration
     cat >> /var/www/html/wp-config.php << 'EOF'
@@ -75,6 +73,11 @@ EOF
         --admin_email="$WP_ADMIN_EMAIL" \
         --skip-email
 fi
+
+
+echo "DEBUG: Before user creation, wp-config.php exists?"
+ls -la /var/www/html/wp-config.php
+pwd
 
 if [ "$WP_USER" != "$WP_ADMIN_USER" ]; then
     if ! wp user get "$WP_USER" --allow-root --path=${WP_ROOT} > /dev/null 2>&1; then
