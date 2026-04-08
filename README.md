@@ -174,3 +174,4 @@ WP-CLI for automated installation and configuration
 Redis object caching integration
 Multi-user setup with role-based access
 PHP-FPM optimization for container environments
+

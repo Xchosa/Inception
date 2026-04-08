@@ -9,7 +9,6 @@ services:
     restart: on-failure
     ports:
      - "443:443"
-     - "8080:80"
     depends_on:
       - wordpress
     networks:
@@ -30,8 +29,8 @@ services:
       - wordpress_data:/var/www/html # wordpress volume 
       # configure own page path
     restart: on-failure
-    ports:
-      - "9000:9000"
+    expose:
+      - 9000
     env_file:
       - .env
     environment:
@@ -105,8 +104,10 @@ services:
       - mariadb_data:/var/lib/mysql
     container_name: mariadb
     restart: on-failure
-    ports:
-      - "3306:3306"
+    expose:
+      - 3306
+    #ports: nicht freigegeben , for docs 
+    #  - "3306:3306"
     env_file:
       - .env
     environment:
@@ -118,13 +119,13 @@ services:
       - wp_admin_password
     networks:
       - inception
-    healthcheck:
-      #test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      test: ["CMD", "sh", "-c", "mysql -h localhost -u root -p${db_root_password} -e 'SELECT 1'"]
-      interval: 10s
-      timeout: 5s
-      retries: 5 
-      start_period: 30s
+    #healthcheck:
+    #  #test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+    #  test: ["CMD", "sh", "-c", "mysql -h localhost -u root -p$${db_root_password}"]
+    #  interval: 10s
+    #  timeout: 5s
+    #  retries: 5 
+    #  start_period: 30s
 
   portfolio:
     build:

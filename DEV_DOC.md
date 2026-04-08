@@ -275,6 +275,7 @@ docker exec nginx nginx -t
 | `make re`              | Clean and rebuild everything                       |
 | `make sync-time`       | Synchronize system time (NTP)                      |
 
+docker build .            build current image 
 ## Troubleshooting
 
 ### Container Exits Immediately
@@ -283,6 +284,8 @@ Check logs for errors:
 cd src && docker compose logs ftp_server
 cd src && docker compose logs wordpress
 cd src && docker compose logs mariadb
+
+docker exec -it mariadb bin/bash
 
 ## Project Structure
 

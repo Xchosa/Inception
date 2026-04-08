@@ -44,12 +44,3 @@ echo "Starting vsftpd in foreground..."
 
 exec vsftpd /etc/vsftpd.conf
 
-
-#echo "Available network interfaces:"
-#ip addr show || ifconfig -a
-#echo "Checking specific IPs:"
-#ping -c 1 127.0.0.1 >/dev/null 2>&1 && echo "127.0.0.1 is available" || echo "127.0.0.1 NOT available"
-#ping -c 1 0.0.0.0 >/dev/null 2>&1 && echo "0.0.0.0 is available" || echo "0.0.0.0 NOT available"
-
-# Check available IP addresses in container
-
