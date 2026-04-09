@@ -133,6 +133,15 @@ docker ps | grep mariadb
 
 ## Execute Commands in Containers
 
+(containers are running or use docker build <wordpress>)
+docker compose exec wordpress bash
+(executes process in a already running Container)
+docker compose logs wordpress
+
+(same directory as compose file => creates a new seperate Container for ) 
+(rm flag => deletes container after leaving)
+docker compose run --rm --entrypoint sh <wordpress>
+
 # Open interactive shell
 
 docker exec -it wordpress bash

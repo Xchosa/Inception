@@ -1,9 +1,9 @@
 #!/bin/bash
 
 
-set -e
+#set -e
 
-#ping -t 127.0.0.1 > /dev/null 2>&1 &
+ping -t 127.0.0.1 > /dev/null 2>&1 &
 
 MYSQL_PASS=$(cat /run/secrets/db_user_password)
 WP_ROOT_PASS=$(cat /run/secrets/wp_admin_password)
@@ -104,6 +104,8 @@ sed -i 's|listen = /run/php/php8.2-fpm.sock|listen = 9000|' /etc/php/8.2/fpm/poo
 
 
 exec php-fpm8.2 -F
+
+
 #default listens to a local file / socket 
 
 # https://wp-cli.org/
