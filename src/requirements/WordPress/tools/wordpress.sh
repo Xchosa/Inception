@@ -14,13 +14,6 @@ WP_PATH="/usr/local/bin/wp"
 WP_ROOT="/var/www/html"
 
 
-#echo "DEBUG: MYSQL_PASS value is: $MYSQL_PASS"
-#echo "DEBUG: MYSQL_USER value is: $MYSQL_USER"
-#echo "DEBUG: MYSQL_DATABASE value is: $MYSQL_DATABASE"
-#echo $WP_ADMIN_USER
-#echo $WP_ROOT_PASS 
-#echo $WP_ADMIN_EMAIL
-
 if [ ! -f "$WP_PATH" ]; then
 	curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 	chmod +x wp-cli.phar
@@ -47,6 +40,9 @@ if [ ! -f "wp-config.php" ]; then
         --dbprefix="$WP_DB_PREFIX" \
         --skip-check \
         --extra-php <<'EOF'
+define('WP_HOME', 'https://poverbec.42.fr');
+define('WP_SITEURL', 'https://poverbec.42.fr');
+
 
 define('WP_CACHE', true);
 define('WP_REDIS_HOST', 'redis');

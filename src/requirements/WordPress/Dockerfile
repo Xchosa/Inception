@@ -16,6 +16,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN update-ca-certificates
 
+#COPY /conf /etc/php/8.2/fpm/pool.d/www.conf
 COPY ./tools/wordpress.sh /wordpress.sh
 
 

@@ -212,6 +212,11 @@ make fclean
 # - SSL directories
 
 ⚠️ **Warning**: `make fclean` **deletes all data**. Use with caution!
+## known Erros 
+  Package errors 4 E: Release file for http://deb.debian.org/debian-security/dists/bookworm-security/InRelease is not valid yet (invalid for another 1h 57min 7s). Updates for this repository will not be applied.
+
+  just reset time:
+  sudo systemctl restart systemd-timesyncd
 
 ## Verify Services Are Running
 

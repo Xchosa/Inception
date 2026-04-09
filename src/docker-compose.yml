@@ -114,7 +114,6 @@ services:
     secrets:
       - db_root_password
       - db_user_password
-      - wp_admin_password
     networks:
       - inception
     healthcheck:
