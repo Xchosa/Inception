@@ -25,8 +25,8 @@ GRANT ALL PRIVILEGES ON \`${MYSQL_DATABASE}\`.* TO '${MYSQL_USER}'@'%';
 ALTER USER 'root'@'localhost' IDENTIFIED BY '${db_root_password}';
 FLUSH PRIVILEGES;
 EOF
-
-	exec mysqld --user=mysql --init-file=/tmp/initmariadb.sql
+	mariadbd --user=mysql --bootstrap --datadir=/var/lib/mysql < /tmp/initmariadb.sql
+	#exec mysqld --user=mysql --init-file=/tmp/initmariadb.sql
 else
 	exec mysqld --user=mysql
 fi

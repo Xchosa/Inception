@@ -1,53 +1,53 @@
 #!/bin/bash
 
 
-#set -e
+set -e
 
-ping -t 127.0.0.1 > /dev/null 2>&1 &
+#ping -t 127.0.0.1 > /dev/null 2>&1 &
 
 MYSQL_PASS=$(cat /run/secrets/db_user_password)
 WP_ROOT_PASS=$(cat /run/secrets/wp_admin_password)
 WP_USER_PASS=$(cat /run/secrets/wp_user_password)
 
 
-
-
-echo "MariaDB is ready!"
 WP_PATH="/usr/local/bin/wp"
 WP_ROOT="/var/www/html"
 
 
-echo "DEBUG: MYSQL_PASS value is: $MYSQL_PASS"
-echo "DEBUG: MYSQL_USER value is: $MYSQL_USER"
-echo "DEBUG: MYSQL_DATABASE value is: $MYSQL_DATABASE"
-echo $WP_ADMIN_USER
-echo $WP_ROOT_PASS 
-echo $WP_ADMIN_EMAIL
+#echo "DEBUG: MYSQL_PASS value is: $MYSQL_PASS"
+#echo "DEBUG: MYSQL_USER value is: $MYSQL_USER"
+#echo "DEBUG: MYSQL_DATABASE value is: $MYSQL_DATABASE"
+#echo $WP_ADMIN_USER
+#echo $WP_ROOT_PASS 
+#echo $WP_ADMIN_EMAIL
 
 if [ ! -f "$WP_PATH" ]; then
 	curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 	chmod +x wp-cli.phar
 	mv wp-cli.phar "$WP_PATH"
 fi
-#check if wp-cli works
-#wp --info --allow-root || echo "wp-cli check failed, continuing..."
 
 cd /var/www/html
 
+if [ ! -f "wp-load.php" ]; then
+    echo "Downloading WordPress core..."
+    wp core download --allow-root
+else
+    echo "WordPress core already present."
+fi
+
 
 if [ ! -f "wp-config.php" ]; then
-    wp core download --allow-root
+    echo "Creating wp-config.php"
     wp config create --allow-root \
-        --dbname=$MYSQL_DATABASE \
-        --dbuser=$MYSQL_USER \
-        --dbpass=$MYSQL_PASS \
-        --dbhost=mariadb:3306 \
-		--dbprefix="$WP_DB_PREFIX"
+        --dbname="$MYSQL_DATABASE" \
+        --dbuser="$MYSQL_USER" \
+        --dbpass="$MYSQL_PASS" \
+        --dbhost="mariadb:3306" \
+        --dbprefix="$WP_DB_PREFIX" \
+        --skip-check \
+        --extra-php <<'EOF'
 
-
-    #Add Redis configuration
-    cat >> /var/www/html/wp-config.php << 'EOF'
-// Redis Object Cache
 define('WP_CACHE', true);
 define('WP_REDIS_HOST', 'redis');
 define('WP_REDIS_PORT', 6379);
@@ -55,7 +55,7 @@ define('WP_REDIS_TIMEOUT', 1);
 define('WP_REDIS_READ_TIMEOUT', 1);
 define('WP_REDIS_DATABASE', 0);
 
-// FTP plugin 
+
 define('FS_METHOD', 'ftpext');
 define('FTP_HOST', 'ftp_server');
 define('FTP_USER', getenv('WP_ADMIN_USER'));
@@ -66,24 +66,22 @@ define('FTP_CONTENT_DIR', '/var/www/html/wp-content/');
 define('FTP_PLUGIN_DIR', '/var/www/html/wp-content/plugins/');
 define('FTP_THEME_DIR', '/var/www/html/wp-content/themes/');
 EOF
+else
+    echo "wp-config.php already exists."
+fi
 
-
+if ! wp core is-installed --allow-root --path=/var/www/html; then
+    echo "Installing WordPress..."
     wp core install --allow-root \
         --url="poverbec.42.fr" \
         --title="Inception" \
-        --admin_user=$WP_ADMIN_USER \
-        --admin_password=$WP_ROOT_PASS \
+        --admin_user="$WP_ADMIN_USER" \
+        --admin_password="$WP_ROOT_PASS" \
         --admin_email="$WP_ADMIN_EMAIL" \
         --skip-email
-fi
-
-if [ -f /var/www/html/wp-config.php ]; then
-    echo "wp-config.php exists"
-    ls -la /var/www/html/wp-config.php
 else
-    echo "wp-config.php does not exist"
+    echo "WordPress is already installed."
 fi
-
 
 if [ "$WP_USER" != "$WP_ADMIN_USER" ]; then
     if ! wp user get "$WP_USER" --allow-root --path=${WP_ROOT} > /dev/null 2>&1; then
@@ -104,11 +102,3 @@ sed -i 's|listen = /run/php/php8.2-fpm.sock|listen = 9000|' /etc/php/8.2/fpm/poo
 
 
 exec php-fpm8.2 -F
-
-
-#default listens to a local file / socket 
-
-# https://wp-cli.org/
-#curl -0 https://raw.githubusercontent.com/wp-cli/wp-cli/v2.12.0/utils/wp-completion.bash
-#source /FULL/PATH/TO/wp-completion.bash
-#source ~/.bash_profile
