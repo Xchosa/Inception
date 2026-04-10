@@ -23,6 +23,17 @@ Prerequisites
 	Sudo privileges for host file modification
 	Available ports: 443, 9000, 3306, 8080
 
+The infrastructure consists of four core services:
+
+- **NGINX** — acts as the sole entry point, handling HTTPS on port 443 with TLS 1.3 and forwarding PHP requests to WordPress via FastCGI
+- **WordPress + PHP-FPM** — the content management system, running without a web server of its own
+- **MariaDB** — the relational database storing all WordPress data
+- **Redis** — caching layer for WordPress optimization
+- **FTP Server (ftpd)** — provides file access to WordPress volumes
+- **Static Website** — a non-PHP personal portfolio hosted via NGINX on a separate subdomain
+
+
+
 
 Setup 
 # Build and start all services

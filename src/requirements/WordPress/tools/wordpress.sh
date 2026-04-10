@@ -50,6 +50,7 @@ define('WP_REDIS_PORT', 6379);
 define('WP_REDIS_TIMEOUT', 1);
 define('WP_REDIS_READ_TIMEOUT', 1);
 define('WP_REDIS_DATABASE', 0);
+#define('WP_REDIS)
 
 
 define('FS_METHOD', 'ftpext');
@@ -62,9 +63,14 @@ define('FTP_CONTENT_DIR', '/var/www/html/wp-content/');
 define('FTP_PLUGIN_DIR', '/var/www/html/wp-content/plugins/');
 define('FTP_THEME_DIR', '/var/www/html/wp-content/themes/');
 EOF
+    
 else
     echo "wp-config.php already exists."
 fi
+wp plugin install redis-cache --allow-root
+wp plugin activate redis-cache --allow-root
+
+wp redis enable --allow-root
 
 if ! wp core is-installed --allow-root --path=/var/www/html; then
     echo "Installing WordPress..."
@@ -94,5 +100,6 @@ if [ "$WP_USER" != "$WP_ADMIN_USER" ]; then
 fi
 
 chown -R www-data:www-data /var/www/html
+
 
 exec php-fpm8.2 -F

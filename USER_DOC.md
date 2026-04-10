@@ -28,10 +28,24 @@ curl -Ik https://poverbec.42.fr
 docker exec -it mariadb mysql -u paul -p$(cat /run/secrets/db_user_password) mydb
 
 # Test Redis
+connect to Redis container: 
+docker exec -it redis redis-cli
+
 docker exec -it redis redis-cli ping
 
 # Check FTP (requires lftp)
+
 lftp -u paulFTP localhost:21
+get filename.txt           # Download file
+put /local/path/file.txt   # Upload file
+mget *.txt                 # Download multiple files (with confirmation)
+mput /local/path/*.txt     # Upload multiple files (with confirmation)
+rm filename.txt            # Delete file
+mv oldname.txt newname.txt # Rename filelk
+
+# Useful options
+put -O /var/www/html/ /home/user/file.txt   # Upload with target directory
+get -O /home/user/ filename.txt              # Download to specific path
 
 
 
