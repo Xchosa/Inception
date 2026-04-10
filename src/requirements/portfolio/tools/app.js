@@ -16,8 +16,8 @@ const app = Vue.createApp({
 		SAP_StackIT_Challange() {
 			window.open(this.git_sap_sit, '_blank');
 		},
-		minishell() {
-			window.open(this.minishell , '_blank');
+		Minishell() {
+			window.open(this.gitMinishell, '_blank');
 		}
 	}
 });
