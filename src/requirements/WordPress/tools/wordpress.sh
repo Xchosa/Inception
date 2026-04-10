@@ -36,9 +36,6 @@ if [ ! -f "wp-config.php" ]; then
         --allow-root \
         --skip-check \
         --extra-php <<'EOF'
-define('WP_HOME', 'https://poverbec.42.fr');
-define('WP_SITEURL', 'https://poverbec.42.fr');
-
 
 define('WP_CACHE', true);
 define('WP_REDIS_HOST', 'redis');
@@ -86,7 +83,8 @@ exec php-fpm8.2 -F
 
 
 
-
+#define('WP_HOME', 'https://poverbec.42.fr');
+#define('WP_SITEURL', 'https://poverbec.42.fr');
 
 #if ! wp core is-installed --allow-root --path=/var/www/html; then
 #    echo "Installing WordPress..."

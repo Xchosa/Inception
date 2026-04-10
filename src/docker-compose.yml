@@ -3,24 +3,31 @@
 
 #without docker swarm first
 services:
-  nginx:
-    build: ./requirements/nginx/.
-    container_name: nginx
+
+  mariadb:
+    build: ./requirements/MariaDB/.
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    container_name: mariadb
     restart: on-failure
-    ports:
-     - "443:443"
-    depends_on:
-      - wordpress
+    expose:
+      - 3306
+    env_file:
+      - .env
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+    secrets:
+      - db_root_password
+      - db_user_password
     networks:
       - inception
-    volumes:
-      - ./requirements/nginx/conf:/etc/nginx/conf.d
-      - wordpress_data:/var/www/html
-      - ../secrets/ssl:/etc/nginx/certs:ro
-    secrets:
-      - privKey
-      - certificate
-
+    healthcheck:
+      test: ["CMD-SHELL", "mariadb -u root --password=$(cat /run/secrets/db_root_password) -e 'SELECT 1'"]
+      interval: 10s
+      timeout: 5s
+      retries: 5 
+      start_period: 30s
 
   wordpress:
     build: ./requirements/WordPress/.
@@ -54,6 +61,28 @@ services:
         condition: service_healthy
       redis:
         condition: service_started
+
+
+  nginx:
+    build: ./requirements/nginx/.
+    container_name: nginx
+    restart: on-failure
+    ports:
+     - "443:443"
+    depends_on:
+      - wordpress
+    networks:
+      - inception
+    volumes:
+      - ./requirements/nginx/conf:/etc/nginx/conf.d
+      - wordpress_data:/var/www/html
+      - ../secrets/ssl:/etc/nginx/certs:ro
+    secrets:
+      - privKey
+      - certificate
+
+
+
   
   redis:
     build:
@@ -91,30 +120,7 @@ services:
       - wordpress
 
 
-  mariadb:
-    build: ./requirements/MariaDB/.
-    volumes:
-      - mariadb_data:/var/lib/mysql
-    container_name: mariadb
-    restart: on-failure
-    expose:
-      - 3306
-    env_file:
-      - .env
-    environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-    secrets:
-      - db_root_password
-      - db_user_password
-    networks:
-      - inception
-    healthcheck:
-      test: ["CMD-SHELL", "mariadb -u root --password=$(cat /run/secrets/db_root_password) -e 'SELECT 1'"]
-      interval: 10s
-      timeout: 5s
-      retries: 5 
-      start_period: 30s
+
 
   #portfolio:
   #  build:

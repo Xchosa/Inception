@@ -6,7 +6,9 @@ RUN apt update && apt upgrade -y && \
 	rm -rf /var/lib/apt/lists/*
 
 COPY ./conf/default.conf /etc/nginx/conf.d/default.conf
-
+COPY ./paulswebsite/app.js /var/www/paulswebsite/app.js
+COPY ./paulswebsite/index.html /var/www/paulswebsite/index.html
+COPY ./paulswebsite/styles.css /var/www/paulswebsite/styles.css
 EXPOSE 443
 
 COPY ./tools/nginx.sh /nginx.sh
