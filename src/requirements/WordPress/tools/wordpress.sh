@@ -22,22 +22,18 @@ fi
 
 cd /var/www/html
 
-if [ ! -f "wp-load.php" ]; then
-    echo "Downloading WordPress core..."
-    wp core download --allow-root
-else
-    echo "WordPress core already present."
-fi
-
 
 if [ ! -f "wp-config.php" ]; then
+    echo "Downloading WordPress core..."
+    wp core download --allow-root
+
     echo "Creating wp-config.php"
     wp config create --allow-root \
-        --dbname="$MYSQL_DATABASE" \
-        --dbuser="$MYSQL_USER" \
-        --dbpass="$MYSQL_PASS" \
-        --dbhost="mariadb:3306" \
-        --dbprefix="$WP_DB_PREFIX" \
+        --dbname="${MYSQL_DATABASE}" \
+        --dbuser="${MYSQL_USER}" \
+        --dbpass="${MYSQL_PASS}" \
+        --dbhost="${WP_DB_HOST}:3306" \
+        --allow-root \
         --skip-check \
         --extra-php <<'EOF'
 define('WP_HOME', 'https://poverbec.42.fr');
@@ -64,40 +60,57 @@ define('FTP_PLUGIN_DIR', '/var/www/html/wp-content/plugins/');
 define('FTP_THEME_DIR', '/var/www/html/wp-content/themes/');
 EOF
     
+    wp core install --allow-root \
+        --url="${DOMAIN_NAME}" \
+        --title="${WP_TITLE}" \
+        --admin_user="$WP_ADMIN_USER" \
+        --admin_password="$WP_ROOT_PASS" \
+        --admin_email="$WP_ADMIN_EMAIL" 
+
+    wp user create "$WP_USER" "$WP_USER_EMAIL" \
+            --role=author \
+            --user_pass="$WP_USER_PASS" \
+            --allow-root
+
 fi
 wp plugin install redis-cache --allow-root
 wp plugin activate redis-cache --allow-root
-
 wp redis enable --allow-root
 
-if ! wp core is-installed --allow-root --path=/var/www/html; then
-    echo "Installing WordPress..."
-    wp core install --allow-root \
-        --url="poverbec.42.fr" \
-        --title="Inception" \
-        --admin_user="$WP_ADMIN_USER" \
-        --admin_password="$WP_ROOT_PASS" \
-        --admin_email="$WP_ADMIN_EMAIL" \
-        --skip-email
-else
-    echo "WordPress is already installed."
-fi
 
-if [ "$WP_USER" != "$WP_ADMIN_USER" ]; then
-    if ! wp user get "$WP_USER" --allow-root --path=${WP_ROOT} > /dev/null 2>&1; then
-        echo "Creating WordPress User role: Author: $WP_USER"
-        wp user create "$WP_USER" "$WP_USER_EMAIL" \
-            --role=author \
-            --user_pass="$WP_USER_PASS" \
-            --allow-root \
-            --path=/var/www/html
-        echo "User $WP_USER created successfully"
-    else
-        echo "User $WP_USER already exists"
-    fi
-fi
 
 chown -R www-data:www-data /var/www/html
 
 
 exec php-fpm8.2 -F
+
+
+
+
+
+#if ! wp core is-installed --allow-root --path=/var/www/html; then
+#    echo "Installing WordPress..."
+#    wp core install --allow-root \
+#        --url="${DOMAIN_NAME}" \
+#        --title="${WP_TITLE}" \
+#        --admin_user="$WP_ADMIN_USER" \
+#        --admin_password="$WP_ROOT_PASS" \
+#        --admin_email="$WP_ADMIN_EMAIL" \
+#        --skip-email
+#else
+#    echo "WordPress is already installed."
+#fi
+
+#if [ "$WP_USER" != "$WP_ADMIN_USER" ]; then
+#    if ! wp user get "$WP_USER" --allow-root --path=${WP_ROOT} > /dev/null 2>&1; then
+#        echo "Creating WordPress User role: Author: $WP_USER"
+#        wp user create "$WP_USER" "$WP_USER_EMAIL" \
+#            --role=author \
+#            --user_pass="$WP_USER_PASS" \
+#            --allow-root \
+#            --path=/var/www/html
+#        echo "User $WP_USER created successfully"
+#    else
+#        echo "User $WP_USER already exists"
+#    fi
+#fi

@@ -5,7 +5,7 @@ all: up
 
 up: sync-time
 	@mkdir -p $(mariaDb_Dir) $(wordpress_Dir)
-	bash ./create_default_env.sh
+	bash ./instructions/create_default_env.sh
 #	bash ./create_default_secrets.sh
 #	sudo cp /etc/hosts /etc/hosts.backup
 	sudo cp script/hosts /etc/hosts 
