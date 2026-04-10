@@ -47,7 +47,6 @@ services:
       - wp_user_password
       - db_user_password
       - db_root_password
-      
     networks:
       - inception
     depends_on:
@@ -55,11 +54,11 @@ services:
         condition: service_healthy
       redis:
         condition: service_started
-    healthcheck:
-      test: ["CMD", "php-fpm8.2", "-t"]
-      interval: 10s
-      timeout: 10s
-      retries: 5
+    #healthcheck:
+    #  test: ["CMD", "php-fpm8.2", "-t"]
+    #  interval: 10s
+    #  timeout: 10s
+    #  retries: 5
 
   redis:
     build:
@@ -94,8 +93,7 @@ services:
     networks:
       - inception
     depends_on:
-      wordpress:
-        condition: service_healthy
+      - wordpress
 
 
   mariadb:
@@ -117,7 +115,10 @@ services:
     networks:
       - inception
     healthcheck:
-      test: ["CMD", "sh", "-c", "mysql -h localhost -u root -p$${db_root_password}"]
+      #test: ["CMD-SHELL", "mariadb-admin ping -h localhost -u \"$${MYSQL_USER}\" --password=\"$$(cat /run/secrets/db_user_password)\" --silent"]
+      #test: ["CMD-SHELL", "mysql -h localhost -u \"$${MYSQL_USER}\" --password=\"$$(cat /run/secrets/db_user_password)\" -e 'SELECT 1'"]
+      test: ["CMD-SHELL", "mariadb -u root --password=$(cat /run/secrets/db_root_password) -e 'SELECT 1'"]
+      #test: ["CMD", "sh", "-c", "mysql -h localhost -u ${MYSQL_USER} -p=$${cat /run/secrets/db_user_password}"]
       interval: 10s
       timeout: 5s
       retries: 5 

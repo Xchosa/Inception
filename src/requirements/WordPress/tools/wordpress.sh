@@ -64,8 +64,6 @@ define('FTP_PLUGIN_DIR', '/var/www/html/wp-content/plugins/');
 define('FTP_THEME_DIR', '/var/www/html/wp-content/themes/');
 EOF
     
-else
-    echo "wp-config.php already exists."
 fi
 wp plugin install redis-cache --allow-root
 wp plugin activate redis-cache --allow-root

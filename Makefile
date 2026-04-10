@@ -1,7 +1,7 @@
 mariaDb_Dir = /home/poverbec/data/mariadb
 wordpress_Dir = /home/poverbec/data/wordpress
 
-
+all: up 
 
 up: sync-time
 	@mkdir -p $(mariaDb_Dir) $(wordpress_Dir)
@@ -9,7 +9,7 @@ up: sync-time
 #	bash ./create_default_secrets.sh
 #	sudo cp /etc/hosts /etc/hosts.backup
 	sudo cp script/hosts /etc/hosts 
-	cd src && docker compose -f docker-compose.yml  up --build
+	cd src && docker compose -f docker-compose.yml  up -d --build
 
 
 debug-wordpress:
