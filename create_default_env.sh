@@ -20,7 +20,7 @@ MYSQL_DATABASE=mydb
 MYSQL_USER=paul
 
 
-DOMAIN_Name=poverbec.42.fr
+DOMAIN_NAME=poverbec.42.fr
 
 #WordPress
 WP_ADMIN_USER=SuperUser

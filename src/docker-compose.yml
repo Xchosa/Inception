@@ -86,9 +86,9 @@ services:
       FTP_USER: ${FTP_USER}
     secrets:
       - wp_admin_password
-      - FTPprivKey
-      - FTPcertificate
-      - sftp_password
+      #- FTPprivKey
+      #- FTPcertificate
+      #- sftp_password
     shm_size: "1gb"
     restart: unless-stopped
     networks:
@@ -165,11 +165,11 @@ secrets:
     file: ../secrets/ssl/privKey.pem
   certificate:
     file: ../secrets/ssl/certificate.pem
-  FTPcertificate:
-    file: ../secrets/sftpSSL/ftp-cert.pem
-  FTPprivKey:
-    file: ../secrets/sftpSSL/ftp-key.pem
-  sftp_password:
-    file: ../secrets/sftp_password.txt
+  #FTPcertificate:
+  #  file: ../secrets/sftpSSL/ftp-cert.pem
+  #FTPprivKey:
+  #  file: ../secrets/sftpSSL/ftp-key.pem
+  #sftp_password:
+  #  file: ../secrets/sftp_password.txt
 
 

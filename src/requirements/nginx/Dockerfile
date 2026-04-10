@@ -9,8 +9,7 @@ COPY ./conf/default.conf /etc/nginx/conf.d/default.conf
 
 
 EXPOSE 443
-# copy files from host to container 
-# relative Dockerfile loccation to absolute path in container
+
 COPY ./tools/nginx.sh /nginx.sh
 
 RUN chmod +x /nginx.sh 
@@ -21,12 +20,4 @@ RUN chmod +x /nginx.sh
 
 ENTRYPOINT  [ "/nginx.sh" ]
 
-
-
-# umleiten auf Homeseite mit 4 buttens -> zu jeweiligen container, wordpress, eigen webseite, one page php fuer mariadb 
-# diese lading page var/www/html 
-
-
-#difference cmd and Entrypoint
-#ngix so configuieren das er den server.conf ausfuehrt 
 

@@ -4,16 +4,9 @@
 set -e
 
 
-
-
 FTP_PASSWORD=$(cat /run/secrets/wp_admin_password | tr -d '\n\r')
 
-#copy certificates from secrets to container secrets
-#if [ ! -f /run/secrets/FTPcertificate ] || [ ! -f /run/secrets/FTPprivKey ]; then
-#    echo "ERROR: SSL certificates not found in secrets!"
-#    exit 1
-#fi
-#echo "SSL certificates found"
+
 echo "FTP server configured without SSL"
 
 echo "Setting up FTP user: $FTP_USER"
