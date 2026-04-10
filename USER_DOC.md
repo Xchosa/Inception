@@ -25,6 +25,8 @@ The Inception stack provides a complete web hosting environment with the followi
 curl -Ik https://poverbec.42.fr
 
 # Access MariaDB
+docker exec -it inception-mariadb-1 mysql -u root
+docker exec -it inception-mariadb-1 mysql -u root -p
 docker exec -it mariadb mysql -u paul -p$(cat /run/secrets/db_user_password) mydb
 
 # Test Redis
@@ -118,6 +120,7 @@ curl -s https://poverbec.42.fr | grep -i wordpress
 Database Connectivity:
 # Access MariaDB container
 docker exec -it mariadb sh
+docker exec -it mariadb-1 mysql -u root -p
 
 # Connect to database
 mysql -u paul -p$(cat /run/secrets/db_user_password) mydb
