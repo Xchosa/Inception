@@ -1,188 +1,153 @@
-# Inception Project
-This project has been created as part
-of the 42 curriculum by poverbec
+**Project Description**
+Inception is a containerized infrastructure project that demonstrates advanced Docker orchestration skills through the deployment of a complete LAMP-like web stack. The project implements a multi-service architecture using custom-built Docker containers without relying on pre-built images, showcasing deep understanding of containerization principles and service orchestration.
 
-Setup:
-check if other web server is running 
-if yes stop it 
-sudo systemctl stop apache2
-sudo systemctl disable apache2
+Architecture
+The stack consists of five core services orchestrated through Docker Compose:
 
+**NGINX**: Reverse proxy with SSL/TLS termination serving on port 443
+- Routes WordPress requests to PHP-FPM
+- Serves static portfolio website on dedicated subdomain (https://poverbec.42.fr/portfolio)
+- Enforces TLS 1.3 encryption for all connections
 
-Wordpress configuration:
-https://poverbec.42.fr/wp-admin
+**WordPress**: PHP-FPM application server with Redis caching integration
+- CMS for main website content
+- Integrated with MariaDB for data persistence
+- Redis object caching for performance optimization
 
+**MariaDB**: Database backend with persistent storage
+- Stores WordPress data and user information
+- Health checks ensure readiness before dependent services start
 
-Inception is a Docker-based infrastructure project that implements a multi-service web stack using containerization. The project creates a complete web environment with NGINX as a reverse proxy, WordPress with PHP-FPM, MariaDB for database management, and Redis for caching - all orchestrated through Docker Compose.
+**Redis**: Caching layer for WordPress optimization
+- Improves performance through object caching
+- Reduces database load for frequently accessed data
 
-The goal is to demonstrate container orchestration skills by building custom Docker images (no pre-built images allowed) and configuring secure inter-container communication. Each service runs in its own isolated container with proper networking, volume management, and SSL/TLS encryption.
+**Portfolio Website**: Static web application hosted via NGINX
+- Modern single-page portfolio site with HTML/CSS/JavaScript
+- Located at `paulswebsite/` directory
+- Showcases projects and personal information
+- Accessible via subdomain routing in NGINX configuration
+
+Each service runs in isolated containers built from custom Dockerfiles with secure inter-container communication via a dedicated Docker network.
+
+Docker Implementation
+
+Custom Container Images
+All services use custom-built images from Debian Bookworm base, ensuring:
+- Minimal attack surface through targeted package installation
+- Reproducible builds across environments
+- Security compliance through controlled dependencies
+
+Service Orchestration
+The docker-compose.yml defines:
+- Service dependencies with health checks
+- Volume persistence for data integrity
+- Secret management for credential security
+- Network isolation for service communication
 
 Instructions
 Prerequisites
 	Docker and Docker Compose installed
 	Sudo privileges for host file modification
-	Available ports: 443, 9000, 3306, 8080
-
-The infrastructure consists of four core services:
-
-- **NGINX** — acts as the sole entry point, handling HTTPS on port 443 with TLS 1.3 and forwarding PHP requests to WordPress via FastCGI
-- **WordPress + PHP-FPM** — the content management system, running without a web server of its own
-- **MariaDB** — the relational database storing all WordPress data
-- **Redis** — caching layer for WordPress optimization
-- **FTP Server (ftpd)** — provides file access to WordPress volumes
-- **Static Website** — a non-PHP personal portfolio hosted via NGINX on a separate subdomain
-
-
+	Available ports: 443, 9000, 3306
 
 
 Setup 
-# Build and start all services
-make up
 
-# Access the services
-# WordPress: https://poverbec.42.fr
-# WordPress Admin: https://poverbec.42.fr/wp-admin
-make down     # Stop all services
-make clean    # Remove containers and volumes  
-make debug-wordpress  # Debug WordPress container
-make debug-mariadb    # Debug MariaDB container
+**Access Services:**
+- WordPress: https://poverbec.42.fr
+- WordPress Admin: https://poverbec.42.fr/wp-admin
+- paulswebsite: https://poverbec.42.fr/paulswebsite
 
-NGINX .
-Supports  TLSv1.3 only.
-Acts as a reverse proxy for WordPress and the static site.
-WordPress
+---
 
-Runs with PHP-FPM
-Connected to MariaDB and Redis for database and caching respectively.
-MariaDB
+## Technical Comparisons
 
-Database service for WordPress.
-Data stored in a dedicated volume.
-Redis
+### Virtual Machines vs Docker
 
-Configured to cache WordPress data.
+| Aspect | Virtual Machines | Docker Containers |
+|---|---|---|
+| Resource Overhead | High (full OS per VM) | Low (shared kernel) |
+| Boot Time | Minutes | Seconds |
+| Isolation Level | Hardware-level | Process-level |
+| Portability | Platform-specific | Write once, run anywhere |
+| Use Case | Complete OS environments | Application packaging |
 
-FTP Server
-Provides file transfer access to the WordPress site files for upload, download, and management.
-Static Website
+### Secrets vs Environment Variables
 
-A small non-PHP website (e.g., personal portfolio or resume).
-Hosted by NGINX as a separate subdomain.
-Adminer
+| Method | Security Level | Visibility | Persistence |
+|---|---|---|---|
+| Docker Secrets | High | Mount-only access | tmpfs (memory) |
+| Environment Variables | Low | Process environment | Container lifecycle |
 
-Database management tool for MariaDB.
-Portainer
+**Note:** Secrets are mounted to `/run/secrets/` and accessed only by authorized containers, preventing credential exposure.
 
-Resources:
-Docker Container: https://docs.docker.com/compose/
+### Docker Network vs Host Network
 
-NGINX: 	https://www.youtube.com/watch?v=iInUBOVeBCc
-		https://nginx.org/en/docs/
+| Aspect | Docker Bridge Network | Host Network |
+|---|---|---|
+| Isolation | Container-to-container isolation | No isolation |
+| Performance | Slight overhead | Native performance |
+| Security | Network-isolated | Direct exposure |
 
-Wordpress: 	https://developer.wordpress.org/advanced-administration/before-install/howto-install/
+### Docker Volumes vs Bind Mounts
 
-MariaDB Docker Guide:	https://mariadb.com/docs?q=docker
+| Storage Type | Management | Portability | Performance |
+|---|---|---|---|
+| Docker Volumes | Docker-managed | High | Optimized |
+| Bind Mounts | Host filesystem | Low | Direct access |
 
-FTP_Server: https://creativethemes.com/blocksy/blog/what-is-ftp-and-how-to-use-it-in-wordpress/#:~:text=That's%20where%20FTP%20(File%20Transfer,plugin%20that%20broke%20your%20site.
+---
 
-Key Configuration Files
-Container orchestration: docker-compose.yml
-NGINX config: default.conf
-Build automation: Makefile
+## Technical Infrastructure
 
+### SSL/TLS Implementation
+- Custom SSL certificates in `ssl/` directory
+- TLS 1.3 enforcement via NGINX configuration
+- Automatic HTTP to HTTPS redirection
 
+### Database Management
+- MariaDB with custom initialization scripts
+- Automated database and user creation
+- Health checks for service readiness
+- Data persistence through bind mounts
 
-AI Usage
+### WordPress Integration
+- WP-CLI for automated installation and configuration
+- Redis object caching integration
+- Multi-user setup with role-based access
+- PHP-FPM optimization for container environments
+
+---
+
+## Configuration Files
+
+| File | Purpose |
+|---|---|
+| `docker-compose.yml` | Container orchestration |
+| `default.conf` | NGINX configuration |
+| `Makefile` | Build automation |
+
+---
+
+## Resources
+
+| Topic | Links |
+|---|---|
+| **Docker** | [Docker Compose Docs](https://docs.docker.com/compose/) |
+| **NGINX** | https://www.youtube.com/watch?v=iInUBOVeBCc
+		https://nginx.org/en/docs/ [Documentation](https://nginx.org/en/docs/) |
+| **WordPress** | [Installation Guide](https://developer.wordpress.org/advanced-administration/before-install/howto-install/) |
+| **MariaDB** | [Docker Guide](https://mariadb.com/docs?q=docker) |
+| **FTP Server** | [FTP in WordPress](https://creativethemes.com/blocksy/blog/what-is-ftp-and-how-to-use-it-in-wordpress/#:~:text=That's%20where%20FTP%20(File%20Transfer,plugin%20that%20broke%20your%20site.
+
+---
+
+## AI Usage
+
 AI assistance was utilized for:
-
-Dockerfile optimization and best practices
-Docker Compose service configuration syntax
-SSL certificate configuration for NGINX
-WordPress CLI automation scripting
-Troubleshooting container networking issues
-
-
-Project Description
-Inception is a containerized infrastructure project that demonstrates advanced Docker orchestration skills through the deployment of a complete LAMP-like web stack. The project implements a multi-service architecture using custom-built Docker containers without relying on pre-built images, showcasing deep understanding of containerization principles and service orchestration.
-Architecture
-The stack consists of four core services orchestrated through Docker Compose:
-
-NGINX: Reverse proxy with SSL/TLS termination serving on port 443
-WordPress: PHP-FPM application server with Redis caching integration
-MariaDB: Database backend with persistent storage
-Redis: Caching layer for WordPress optimization
-Each service runs in isolated containers built from custom Dockerfiles with secure inter-container communication via a dedicated Docker network.
-
-Docker Implementation
-Custom Container Images
-All services use custom-built images from Debian Bookworm base, ensuring:
-
-Minimal attack surface through targeted package installation
-Reproducible builds across environments
-Security compliance through controlled dependencies
-Service Orchestration
-The docker-compose.yml defines:
-
-Service dependencies with health checks
-Volume persistence for data integrity
-Secret management for credential security
-Network isolation for service communication
-
-
-Technical Comparisons
-
-Virtual Machines vs Docker
-Aspect		Virtual Machines					Docker Containers
-Resource 	Overhead High (full OS per VM)		Low (shared kernel)
-Boot Time	Minutes								Seconds
-Isolation 	Level	Hardware-level isolation	Process-level isolation
-Portability	Platform-specific					Write once, run anywhere
-Use Case	Complete OS environments			Application packaging
-
-Docker's lightweight nature allows the Inception stack to run efficiently with minimal resource consumption while maintaining service isolation.
-
-Secrets vs Environment Variables
-Method			Security Level		Visibility					Persistence
-Docker 			Secrets	High		Mount-only access			tmpfs (memory)
-Environment 	Variables			Low	Process environment		Container(lifecycle)
-
-Secrets are mounted to /run/secrets/ and accessed only by authorized containers, preventing credential exposure in process lists or container inspection.
-
-
-Docker Network vs Host Network
-Network Type			Docker Bridge Network				Host Network
-
-Isolation				Container-to-container isolation	no isolation
-
-Performance				Slight overhead						native performace
-
-Security				Network								Direct
-
-
-Docker Volumes vs Bind Mounts
-Storage Type		Management			Portability		Performance
-Docker Volumes		Docker-managed		High			Optimized
-Bind Mounts			Host filesystem		Low				Direct access
-
-This approach provides:
-Direct data access from host system
-Simplified backup procedures
-Development environment flexibility
-Host filesystem integration
-
-Technical Infrastructure
-SSL/TLS Implementation
-Custom SSL certificates in ssl
-TLS 1.3 enforcement via NGINX configuration
-Automatic HTTP to HTTPS redirection
-Database Management
-MariaDB with custom initialization scripts
-Automated database and user creation
-Health checks for service readiness
-Data persistence through bind mounts
-WordPress Integration
-WP-CLI for automated installation and configuration
-Redis object caching integration
-Multi-user setup with role-based access
-PHP-FPM optimization for container environments
-
+- Dockerfile optimization and best practices
+- Docker Compose service configuration syntax
+- SSL certificate configuration for NGINX
+- WordPress CLI automation scripting
+- Troubleshooting container networking issues

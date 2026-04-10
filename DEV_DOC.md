@@ -1,5 +1,156 @@
 Developer documentation
 
+
+## Project Structure
+
+```
+Inception/
+├── Makefile                      # Build automation and commands
+├── README.md                     # Project overview and documentation
+├── USER_DOC.md                   # User guide for accessing services
+├── DEV_DOC.md                    # Developer setup and troubleshooting
+│
+├── script/
+│   └── hosts                     # Custom /etc/hosts entries for local development
+│
+├── src/
+│   ├── docker-compose.yml        # Docker service orchestration
+│   ├── .env                      # Environment variables and configuration
+│   ├── .dockerignore             # Files ignored during Docker builds
+│   │
+│   ├── secrets/                  # Sensitive data (gitignored)
+│   │   ├── ssl/
+│   │   │   ├── certificate.pem   # NGINX SSL certificate
+│   │   │   └── privKey.pem       # NGINX SSL private key
+│   │   ├── sftpSSL/
+│   │   │   ├── ftp-cert.pem      # FTP server certificate
+│   │   │   └── ftp-key.pem       # FTP server private key
+│   │   ├── db_root_password      # MariaDB root password
+│   │   ├── db_user_password      # MariaDB WordPress user password
+│   │   ├── wp_admin_password     # WordPress admin password
+│   │   ├── wp_user_password      # WordPress author password
+│   │   └── sftp_password         # FTP server password
+│   │
+│   └── requirements/             # Custom Docker service configurations
+│       ├── nginx/
+│       │   ├── Dockerfile        # NGINX reverse proxy image
+│       │   ├── .dockerignore
+│       │   ├── conf/
+│       │   │   └── default.conf  # NGINX configuration with SSL/TLS
+│       │   ├── tools/
+│       │   │   └── nginx.sh      # NGINX startup script
+│       │   └── paulswebsite/     # Static portfolio website files
+│       │       ├── index.html
+│       │       ├── styles.css
+│       │       └── app.js
+│       │
+│       ├── wordpress/
+│       │   ├── Dockerfile        # WordPress + PHP-FPM image
+│       │   ├── .dockerignore
+│       │   ├── conf/
+│       │   │   └── www.conf      # PHP-FPM configuration
+│       │   └── tools/
+│       │       └── wordpress.sh  # WordPress setup script
+│       │
+│       ├── mariadb/
+│       │   ├── Dockerfile        # MariaDB image
+│       │   ├── .dockerignore
+│       │   └── tools/
+│       │       ├── mariadb.sh    # Database initialization script
+│       │       └── create_db.sql # SQL schema setup
+│       │
+│       ├── redis/
+│       │   ├── Dockerfile        # Redis cache image
+│       │   ├── .dockerignore
+│       │   └── tools/
+│       │       └── redis.sh      # Redis startup script
+│       │
+│       └── ftp_server/
+│           ├── Dockerfile        # VSFTPD FTP server image
+│           ├── .dockerignore
+│           ├── conf/
+│           │   └── vsftpd.conf   # FTP server configuration
+│           └── tools/
+│               └── ftp.sh        # FTP startup and user setup
+│
+└── data/                         # Persistent volume data (created at runtime, gitignored)
+    ├── mariadb/                  # MariaDB database files
+    │   └── mysql/
+    │       ├── mydb/             # WordPress database
+    │       └── ...
+    └── wordpress/                # WordPress installation and uploads
+        ├── wp-admin/
+        ├── wp-content/
+        │   ├── plugins/
+        │   ├── themes/
+        │   └── uploads/          # User-uploaded media files
+        ├── wp-includes/
+        ├── index.php
+        ├── wp-config.php
+        └── ...
+```
+
+### Directory Descriptions
+
+| Directory | Purpose |
+|---|---|
+| `script/` | System-level scripts (hosts file management) |
+| `src/` | All Docker and service configuration |
+| `src/secrets/` | SSL certificates and credential files (⚠️ never commit) |
+| `src/requirements/` | Custom Dockerfiles for each service |
+| `src/requirements/*/conf/` | Service-specific configuration files |
+| `src/requirements/*/tools/` | Entrypoint and setup scripts for each service |
+| `data/` | Persistent data volumes for databases and files (created at runtime) |
+
+### Key Files
+
+| File | Purpose |
+|---|---|
+| `Makefile` | Automation: `make up`, `make down`, `make clean` |
+| `docker-compose.yml` | Service definitions, networking, and volume management |
+| `.env` | Environment variables (domain, usernames, database settings) |
+| `default.conf` | NGINX reverse proxy configuration with SSL/TLS |
+| `www.conf` | PHP-FPM worker process configuration |
+| `vsftpd.conf` | FTP server configuration |
+| `mariadb.sh` | Database and user initialization |
+| `wordpress.sh` | WordPress installation and WP-CLI setup |
+
+### Gitignore Entries
+
+The following should be in `.gitignore`:
+
+```
+# Secrets and certificates
+src/secrets/
+*.pem
+*.key
+
+# Data volumes
+data/
+backup/
+
+# Environment
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+```
+
+### Volume Mounting Diagram
+
+```
+Host Machine (/home/poverbec)
+│
+├── data/mariadb/ ←→ mariadb container:/var/lib/mysql
+├── data/wordpress/ ←→ wordpress container:/var/www/html
+│                    ↓
+│                    nginx container (read-only)
+│
+└── src/secrets/ ←→ All containers:/run/secrets (read-only)
+
+
 ## Prerequisites
 
 Before setting up the project, ensure you have:

@@ -17,7 +17,7 @@ The Inception stack provides a complete web hosting environment with the followi
 
 **FTP Server** - File transfer access to WordPress files (port 21, 30000-30009)
 
-**Portfolio** - Static website showcasing projects (https://poverbec.42.fr/portfolio)
+**Portfolio** - Static website showcasing projects (https://poverbec.42.fr/p)
 
 
 
