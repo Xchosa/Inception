@@ -82,8 +82,6 @@ services:
       - certificate
 
 
-
-  
   redis:
     build:
       context: ./requirements/redisCache
@@ -108,9 +106,6 @@ services:
     environment:
       FTP_USER: ${FTP_USER}
     secrets:
-      - wp_admin_password
-      #- FTPprivKey
-      #- FTPcertificate
       - sftp_password
     shm_size: "1gb"
     restart: unless-stopped
@@ -120,16 +115,6 @@ services:
       - wordpress
 
 
-
-
-  #portfolio:
-  #  build:
-  #    context: ./requirements/portfolio
-  #    dockerfile: Dockerfile
-  #  container_name: portfolio
-  #  restart: on-failure
-  #  networks:
-  #    - inception
       
 volumes:
   mariadb_data:
@@ -166,9 +151,4 @@ secrets:
     file: ../secrets/ssl/certificate.pem
   sftp_password:
     file: ../secrets/sftp_password.txt
-  #FTPcertificate:
-  #  file: ../secrets/sftpSSL/ftp-cert.pem
-  #FTPprivKey:
-  #  file: ../secrets/sftpSSL/ftp-key.pem
-
 
