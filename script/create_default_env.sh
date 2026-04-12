@@ -13,7 +13,6 @@ if [ ! -f $ENV_FILE ]; then
 		if [ "$UserAnswer" = "YES" ]; then
 
 
-
 			cat <<EOF > "$ENV_FILE"
 MYSQL_ROOT_PASSWORD=helloRoot
 MYSQL_DATABASE=mydb
