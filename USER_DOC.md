@@ -120,10 +120,16 @@ curl -s https://poverbec.42.fr | grep -i wordpress
 Database Connectivity:
 # Access MariaDB container
 docker exec -it mariadb sh
-docker exec -it mariadb-1 mysql -u root -p
+docker exec -it mariad mysql -u root -p mydb
+docker exec -it mariadb mysql -u root -p$(cat /run/secrets/db_user_password) mydb
 
-# Connect to database
 mysql -u paul -p$(cat /run/secrets/db_user_password) mydb
+SELECT ID, user_login, user_email FROM wp_users;
+
+
+# SQL Usage 
+SELECT * FROM wp_users;
+SELECT * FROM wp_usermeta;
 
 Cache Performance
 docker exec -it redis redis-cli monitor
