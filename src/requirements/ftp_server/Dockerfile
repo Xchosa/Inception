@@ -2,8 +2,8 @@
 FROM debian:bookworm
 
 
-RUN apt update && apt upgrade -y && \ 
-	apt install -y \
+RUN apt-get update && \
+	apt-get install -y \
 	net-tools \
 	iproute2 \
 	vsftpd && \

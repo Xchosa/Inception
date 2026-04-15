@@ -402,7 +402,7 @@ SHOW TABLES;
 
 # Local FTP connection
 
-lftp -u SuperUser localhost:21
+lftp -u paulFTP localhost:21
 
 # Inside lftp:
 

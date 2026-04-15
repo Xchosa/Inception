@@ -26,10 +26,12 @@ WP_ADMIN_EMAIL=super@example.com
 WP_USER=paul
 WP_USER_EMAIL=paul.overbeck95@gmail.com
 
-WP_DB_PREFIX=wp_
 
-#FTP
+WP_DB_PREFIX=wp_
+MYSQL_HOST=mariadb
+
 FTP_USER=paulFTP
+
 
 
 EOF
