@@ -446,6 +446,17 @@ get a endless loop in a containter
 #ping -t 127.0.0.1 > /dev/null 2>&1 &
 docker logs <container_name>
 
+## debugging 
+new tmp container gets build  
+
+docker run -it wordpress bash
+docker run -it mariadb bash
+
+check in in running container (needs e.g. to pin somewhere)
+docker compose exec wordpress bash
+
+
+
 ### Container Exits Immediately
 
 Check logs for errors:
