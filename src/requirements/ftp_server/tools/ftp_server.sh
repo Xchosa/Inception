@@ -3,9 +3,7 @@
 
 set -e
 
-
-#FTP_PASSWORD=$(cat /run/secrets/wp_admin_password | tr -d '\n\r')
-FTP_PASSWORD=$(cat /run/secrets/sftp_password.txt)
+FTP_PASSWORD=$(cat /run/secrets/sftp_password)
 
 echo "FTP server configured without SSL"
 

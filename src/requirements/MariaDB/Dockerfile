@@ -2,9 +2,9 @@ FROM debian:bookworm
 
 
 RUN apt update && apt upgrade -y && \
-	apt install -y mariadb-server mariadb-client && \
+	apt install -y mariadb-server && \
 	rm -rf /var/lib/apt/lists/* 
-    
+
 COPY ./conf/custom.cnf /etc/mysql/mariadb.conf.d/custom.cnf
 COPY ./tools/MariaDB.sh /MariaDB.sh
 

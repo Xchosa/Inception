@@ -23,7 +23,8 @@ services:
     networks:
       - inception
     healthcheck:
-      test: ["CMD-SHELL", "mariadb -u root --password=$(cat /run/secrets/db_root_password) -e 'SELECT 1'"]
+      #test: ["CMD-SHELL", "mariadb -u root --password=$(cat /run/secrets/db_root_password) -e 'SELECT 1'"]
+      test: ["CMD-SHELL", "mariadb -h localhost -u root --password=$(cat /run/secrets/db_root_password) -e 'SELECT 1'"]
       interval: 10s
       timeout: 5s
       retries: 5 
@@ -40,7 +41,7 @@ services:
     env_file:
       - .env
     environment:
-      MYSQL_HOST: mariadb
+      MYSQL_HOST: ${MYSQL_HOST}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       WP_ADMIN_USER: ${WP_ADMIN_USER}

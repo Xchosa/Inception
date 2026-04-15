@@ -5,13 +5,13 @@ all: up
 
 up: sync-time
 	@mkdir -p $(mariaDb_Dir) $(wordpress_Dir)
-	bash ./script/create_default_env.sh
-#	bash ./script/create_default_secrets.sh
-
-#	bash ./script/setup_hosts.sh
 	sudo cp script/hosts /etc/hosts 
 	cd src && docker compose -f docker-compose.yml  up -d --build
 
+setup:
+	bash ./script/create_default_env.sh
+	bash ./script/create_default_secrets.sh
+	bash ./script/setup_hosts.sh
 
 debug-wordpress:
 	docker run -it wordpress /bin/bash

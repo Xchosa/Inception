@@ -32,7 +32,7 @@ if [ ! -f "wp-config.php" ]; then
         --dbname="${MYSQL_DATABASE}" \
         --dbuser="${MYSQL_USER}" \
         --dbpass="${MYSQL_PASS}" \
-        --dbhost="${WP_DB_HOST}:3306" \
+        --dbhost="${MYSQL_HOST}:3306" \
         --allow-root \
         --skip-check \
         --extra-php <<'EOF'
@@ -43,7 +43,6 @@ define('WP_REDIS_PORT', 6379);
 define('WP_REDIS_TIMEOUT', 1);
 define('WP_REDIS_READ_TIMEOUT', 1);
 define('WP_REDIS_DATABASE', 0);
-#define('WP_REDIS)
 
 
 define('FS_METHOD', 'ftpext');
@@ -81,34 +80,3 @@ chown -R www-data:www-data /var/www/html
 
 exec php-fpm8.2 -F
 
-
-
-#define('WP_HOME', 'https://poverbec.42.fr');
-#define('WP_SITEURL', 'https://poverbec.42.fr');
-
-#if ! wp core is-installed --allow-root --path=/var/www/html; then
-#    echo "Installing WordPress..."
-#    wp core install --allow-root \
-#        --url="${DOMAIN_NAME}" \
-#        --title="${WP_TITLE}" \
-#        --admin_user="$WP_ADMIN_USER" \
-#        --admin_password="$WP_ROOT_PASS" \
-#        --admin_email="$WP_ADMIN_EMAIL" \
-#        --skip-email
-#else
-#    echo "WordPress is already installed."
-#fi
-
-#if [ "$WP_USER" != "$WP_ADMIN_USER" ]; then
-#    if ! wp user get "$WP_USER" --allow-root --path=${WP_ROOT} > /dev/null 2>&1; then
-#        echo "Creating WordPress User role: Author: $WP_USER"
-#        wp user create "$WP_USER" "$WP_USER_EMAIL" \
-#            --role=author \
-#            --user_pass="$WP_USER_PASS" \
-#            --allow-root \
-#            --path=/var/www/html
-#        echo "User $WP_USER created successfully"
-#    else
-#        echo "User $WP_USER already exists"
-#    fi
-#fi

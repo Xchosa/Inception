@@ -14,10 +14,8 @@ if [ ! -f $ENV_FILE ]; then
 
 
 			cat <<EOF > "$ENV_FILE"
-MYSQL_ROOT_PASSWORD=helloRoot
 MYSQL_DATABASE=mydb
 MYSQL_USER=paul
-
 
 DOMAIN_NAME=poverbec.42.fr
 
@@ -32,10 +30,6 @@ WP_DB_PREFIX=wp_
 
 #FTP
 FTP_USER=paulFTP
-
-#Redis
-REDIS_HOST=
-REDIS_PORT=6379
 
 
 EOF

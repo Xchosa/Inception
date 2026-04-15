@@ -5,7 +5,6 @@ FROM debian:bookworm-slim
 
 RUN apt update && apt upgrade -y && \
 	apt install -y redis-server && \
-
 	rm -rf /var/lib/apt/lists/*
 
 COPY tools/redisCacheScript.sh /redisCacheScript.sh
