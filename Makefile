@@ -11,11 +11,10 @@ up: sync-time
 setup:
 	bash ./script/create_default_env.sh
 	bash ./script/create_default_secrets.sh
-	bash ./script/setup_hosts.sh
+	bash ./script/create_hosts.sh
 
 debug-wordpress:
 	docker run -it wordpress /bin/bash
-#innerhalb vom container befehle runnen 
 # -> container stopped nicht direkt/ heangt sich auf 
 
 debug-mariaDb:
