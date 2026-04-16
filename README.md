@@ -51,8 +51,46 @@ Prerequisites
 	Sudo privileges for host file modification
 	Available ports: 443, 9000, 3306
 
-
 Setup 
+1. **Initial Configuration**
+
+   Run the setup script to generate necessary environment files, secrets, and host configurations.
+   ```bash
+   make setup
+   ```
+   This command will:
+   - Create a default `.env` file.
+   - Generate self-signed SSL certificates and other required secrets.
+   - Add `poverbec.42.fr` to your `/etc/hosts` file, pointing to `127.0.0.1`.
+
+2. **Build and Run Containers**
+
+   Build the Docker images and start all services in detached mode.
+   ```bash
+   make up
+   ```
+   This will start NGINX, WordPress, MariaDB, Redis, and the FTP server.
+
+3. **Stopping the Application**
+
+   To stop the running containers without deleting data:
+   ```bash
+   make down
+   ```
+
+4. **Cleaning Up**
+
+   To stop containers and remove all associated volumes (this will delete your database and WordPress files):
+   ```bash
+   make clean
+   ```
+
+   To perform a full clean, which also removes the host data directories:
+   ```bash
+   make fclean
+   ```
+
+
 
 **Access Services:**
 - WordPress: https://poverbec.42.fr

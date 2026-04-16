@@ -554,6 +554,7 @@ Curl -lk https://poverbec.42.fr
 
 check for self signed certificate
 curl --head https://poverbec.42.fr
+curl --head http://poverbec.42.fr
 
 Execute mariadb setup
 Docker exec -t mariadb sh
