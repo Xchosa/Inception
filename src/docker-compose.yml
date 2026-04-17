@@ -74,6 +74,8 @@ services:
       - wordpress
     networks:
       - inception
+    environment:
+      - DOMAIN_NAME=${DOMAIN_NAME}
     volumes:
       - ./requirements/nginx/conf:/etc/nginx/conf.d
       - wordpress_data:/var/www/html
