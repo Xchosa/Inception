@@ -5,8 +5,7 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends nginx openssl iputils-ping gettext-base && \
     rm -rf /var/lib/apt/lists/*
 
-#COPY ./conf/nginx.conf /etc/nginx/conf.f/nginx.conf
-#COPY ./conf/nginx.conf /etc/nginx/template/nginx.conf
+
 COPY ./conf/nginx.conf /etc/nginx/nginx.conf.template
 COPY ./paulswebsite/app.js /var/www/paulswebsite/app.js
 COPY ./paulswebsite/index.html /var/www/paulswebsite/index.html
