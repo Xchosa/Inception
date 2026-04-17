@@ -2,11 +2,12 @@
 FROM debian:bookworm
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends nginx openssl iputils-ping && \
+    apt-get install -y --no-install-recommends nginx openssl iputils-ping gettext-base && \
     rm -rf /var/lib/apt/lists/*
 
-#COPY ./conf/default.conf /etc/nginx/conf.d/default.conf
-COPY ./conf/default.conf.template /etc/nginx/template/default.conf.template
+#COPY ./conf/nginx.conf /etc/nginx/conf.f/nginx.conf
+#COPY ./conf/nginx.conf /etc/nginx/template/nginx.conf
+COPY ./conf/nginx.conf /etc/nginx/nginx.conf.template
 COPY ./paulswebsite/app.js /var/www/paulswebsite/app.js
 COPY ./paulswebsite/index.html /var/www/paulswebsite/index.html
 COPY ./paulswebsite/styles.css /var/www/paulswebsite/styles.css
