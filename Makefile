@@ -3,7 +3,7 @@ wordpress_Dir = /home/poverbec/data/wordpress
 
 all: up 
 
-up: sync-time
+up:
 	@mkdir -p $(mariaDb_Dir) $(wordpress_Dir)
 	sudo cp script/hosts /etc/hosts 
 	cd src && docker compose -f docker-compose.yml  up -d --build
@@ -19,6 +19,7 @@ down:
 sync-time:
 	sudo timedatectl set-ntp on
 	sudo timedatectl status
+	sudo systemctl restart docker
 
 clean:
 	cd src && docker compose down -v
